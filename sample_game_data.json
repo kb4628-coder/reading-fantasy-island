@@ -1,0 +1,728 @@
+{
+  "levels": [
+    {
+      "id": "ZH_G12_01",
+      "tier": "lower",
+      "reading_time_sec": 45,
+      "title": "小松鼠的秋天秘密",
+      "vocabulary": [
+        {
+          "term": "儲存",
+          "pinyin": "ㄔㄨˊ ㄘㄨㄣˊ",
+          "desc": "把東西收好留著以後用。"
+        },
+        {
+          "term": "橡實",
+          "pinyin": "ㄒㄧㄤˋ ㄕˊ",
+          "desc": "橡樹結出來的小堅果，很多小松鼠最愛吃。"
+        }
+      ],
+      "language": "zh",
+      "questions": [
+        {
+          "question_id": "q1",
+          "type": "single_choice",
+          "options": [
+            "因為橡實壞掉了不能吃",
+            "為了準備冬天時有食物可以吃",
+            "想和森林裡的鄰居分享",
+            "因為嘴巴太小放不下"
+          ],
+          "question": "小松鼠奇奇為什麼要把橡實藏在土裡或落葉下？",
+          "hint": "看看文章最後一段奇奇是怎麼回答小兔子的喔！",
+          "explanation": "奇奇提到把橡實藏起來，是為了在寒冷的冬天裡能有食物吃。",
+          "answer_index": 1
+        },
+        {
+          "question_id": "q2",
+          "type": "single_choice",
+          "options": [
+            "深綠色",
+            "亮粉色",
+            "金黃色",
+            "雪白色"
+          ],
+          "question": "文章一開始提到秋天到了，樹葉變成了什麼顏色？",
+          "hint": "文章第一句有寫到微風吹過森林時樹葉的顏色。",
+          "explanation": "第一段寫道：「樹葉都變成了金黃色」。",
+          "answer_index": 2
+        },
+        {
+          "question_id": "q3",
+          "type": "single_choice",
+          "options": [
+            "小狐狸",
+            "小兔子",
+            "大黑熊",
+            "貓頭鷹"
+          ],
+          "question": "是森林裡的哪一隻小動物主動跑來問奇奇問題？",
+          "hint": "第二段寫著看見奇奇並好奇發問的動物。",
+          "explanation": "第二段提到：「小兔子看見了，好奇地問...」。",
+          "answer_index": 1
+        },
+        {
+          "question_id": "q4",
+          "type": "single_choice",
+          "options": [
+            "背在背上的小背包裡",
+            "用兩隻手緊緊抱著",
+            "塞滿在嘴巴裡面",
+            "藏在尾巴厚厚的毛裡"
+          ],
+          "question": "奇奇是把很多顆橡實塞在哪裡運送的？",
+          "hint": "請看第二段形容奇奇嘴巴的句子。",
+          "explanation": "第二段寫道奇奇「嘴巴裡塞滿了圓滾滾的橡實」。",
+          "answer_index": 2
+        },
+        {
+          "question_id": "q5",
+          "type": "single_choice",
+          "options": [
+            "遇到好吃的食物一定要一口氣吃光",
+            "懂得提早做好準備，未雨綢繆",
+            "冬天就不用出門找朋友玩了",
+            "只管睡覺，不用思考明天的事"
+          ],
+          "question": "讀完這篇故事，我們能從小松鼠身上學到什麼好習慣？",
+          "hint": "想想看奇奇在秋天就為冬天準備食物的行為。",
+          "explanation": "奇奇提早為寒冬儲備糧食，展現了懂得提早做好規劃與準備的美德。",
+          "answer_index": 1
+        }
+      ],
+      "paragraphs": [
+        "秋天到了，涼爽的微風吹過森林，樹葉都變成了金黃色。",
+        "小松鼠奇奇每天都很忙碌。牠在樹林裡跑來跑去，嘴巴裡塞滿了圓滾滾的橡實。小兔子看見了，好奇地問：「奇奇，你為什麼吃得這麼急呀？」",
+        "奇奇笑著說：「我不是現在吃！我是要把橡實藏在落葉底下和小洞裡。當寒冷的冬天來臨時，我就有美味的食物可以吃了！」"
+      ],
+      "grade_range": "國小1-2年級",
+      "theme": "動物生活 / 生活常識"
+    },
+    {
+      "id": "ZH_G34_01",
+      "tier": "middle",
+      "reading_time_sec": 75,
+      "title": "大自然的小發明家——魔鬼氈的由來",
+      "vocabulary": [
+        {
+          "term": "觀察",
+          "pinyin": "ㄍㄨㄢ ㄔㄚˊ",
+          "desc": "仔細察看事物。"
+        },
+        {
+          "term": "結構",
+          "pinyin": "ㄐㄧㄝˊ ㄍㄡˋ",
+          "desc": "各個組成部分之間的搭配與排列方式。"
+        },
+        {
+          "term": "發明",
+          "pinyin": "ㄈㄚ ㄇㄧㄥˊ",
+          "desc": "創造出前所未有的新事物或新方法。"
+        }
+      ],
+      "language": "zh",
+      "questions": [
+        {
+          "question_id": "q1",
+          "type": "single_choice",
+          "options": [
+            "果實表面塗滿了黏稠的膠水",
+            "尖端長滿了能勾住毛圈的微小「小鉤子」",
+            "果實有吸盤可以吸住光滑表面",
+            "果實帶有磁鐵可以互相吸引"
+          ],
+          "question": "瑞士工程師在顯微鏡下發現芒刺果實有什麼秘密？",
+          "hint": "仔細看第三段工程師使用顯微鏡觀察到的結構說明。",
+          "explanation": "工程師發現芒刺果實尖端長有微小彎曲的小鉤子，能緊緊勾住布料或毛皮的纖維。",
+          "answer_index": 1
+        },
+        {
+          "question_id": "q2",
+          "type": "single_choice",
+          "options": [
+            "帶寵物散步時要盡量避開森林",
+            "球鞋應該多用鞋帶而不是魔鬼氈",
+            "多仔細觀察大自然，能啟發許多神奇的生活發明",
+            "狗毛比人類的褲子更容易沾上果實"
+          ],
+          "question": "這篇文章主要想告訴我們什麼道理？",
+          "hint": "文章最後一段提到「這項模仿大自然的發明」。",
+          "explanation": "文章藉由魔鬼氈的發明故事，說明仔細觀察自然界常能帶來生活創意的靈感（仿生學）。",
+          "answer_index": 2
+        },
+        {
+          "question_id": "q3",
+          "type": "single_choice",
+          "options": [
+            "兩邊都是光滑的塑膠面",
+            "一邊是微小塑膠鉤，另一邊是毛茸茸的柔軟細圈",
+            "一邊抹膠水，另一邊抹油",
+            "兩邊都裝有強力小磁鐵"
+          ],
+          "question": "魔鬼氈是由哪兩種結構互相搭配才能黏緊的？",
+          "hint": "看第四段工程師模仿大自然所做的兩個表面結構。",
+          "explanation": "第四段提到「一邊做成密密麻麻的塑膠小鉤，另一邊做成毛茸茸的柔軟細圈」。",
+          "answer_index": 1
+        },
+        {
+          "question_id": "q4",
+          "type": "single_choice",
+          "options": [
+            "日本",
+            "瑞士",
+            "美國",
+            "澳洲"
+          ],
+          "question": "這位發明魔鬼氈的工程師來自哪一個國家？",
+          "hint": "第二段開頭有寫到工程師的國籍。",
+          "explanation": "第二段寫著「一位瑞士工程師帶著愛犬去森林散步」。",
+          "answer_index": 1
+        },
+        {
+          "question_id": "q5",
+          "type": "single_choice",
+          "options": [
+            "非常生氣，立刻把褲子剪破丟掉",
+            "好奇探究，拿出顯微鏡仔細觀察",
+            "責怪狗狗不該亂跑到草叢裡",
+            "立刻向植物園提出抗議"
+          ],
+          "question": "當工程師看到褲管沾滿甩不掉的果實時，他採取了什麼態度？",
+          "hint": "看第三段「他沒有生氣，反而拿出...」。",
+          "explanation": "第三段提到他沒有生氣，反而展現科學家的好奇心，用顯微鏡探究原因。",
+          "answer_index": 1
+        }
+      ],
+      "paragraphs": [
+        "你的球鞋或文具袋上，是不是常有一條「撕開時會發出刷刷聲」的神奇布條？這就是我們生活中常用的「魔鬼氈」，它的發明竟然源自一隻愛散步的狗！",
+        "大約八十年前，一位瑞士工程師帶著愛犬去森林散步。回家後，他發現狗狗的毛上和自己的褲管上，沾滿了一顆顆帶刺的芒刺植物果實，怎麼甩都甩不掉。",
+        "他沒有生氣，反而拿出顯微鏡仔細觀察。原來，這些小果實的尖端長滿了微小彎曲的「小鉤子」，只要碰到布料或動物毛皮上的「小圈圈」，就會緊緊勾住。",
+        "工程師靈機一動，模仿這種結構：一邊做成密密麻麻的塑膠小鉤，另一邊做成毛茸茸的柔軟細圈。兩者一壓就黏住，一拉又能撕開，這項模仿大自然的發明，如今成了全世界最受歡迎的生活好幫手！"
+      ],
+      "grade_range": "國小3-4年級",
+      "theme": "科學發明 / 歷史故事"
+    },
+    {
+      "id": "ZH_G34_02",
+      "tier": "middle",
+      "reading_time_sec": 70,
+      "title": "塞翁失馬的智慧",
+      "vocabulary": [
+        {
+          "term": "塞翁",
+          "pinyin": "ㄙㄞˋ ㄨㄥ",
+          "desc": "古代住在邊界要塞的一位老爺爺。"
+        },
+        {
+          "term": "因禍得福",
+          "pinyin": "ㄧㄣ ㄏㄨㄛˋ ㄉㄜˊ ㄈㄨˊ",
+          "desc": "因為遇到壞事，反而意外帶來了好運。"
+        }
+      ],
+      "language": "zh",
+      "questions": [
+        {
+          "question_id": "q1",
+          "type": "single_choice",
+          "options": [
+            "傷心大哭，生了一場大病",
+            "憤怒地到處責怪鄰居",
+            "平靜地面對，認為這不一定是壞事",
+            "立刻花大錢去買新馬"
+          ],
+          "question": "當老爺爺的心愛駿馬跑丟時，他的態度是什麼？",
+          "hint": "文章第一段老爺爺對安慰他的鄰居說了什麼？",
+          "explanation": "第一段提到，老爺爺平靜地說：「這不一定是壞事呢！」展現出不執著的心態。",
+          "answer_index": 2
+        },
+        {
+          "question_id": "q2",
+          "type": "single_choice",
+          "options": [
+            "因為年紀太小",
+            "因為騎馬摔斷了腿受傷",
+            "因為騎著馬逃到了很遠的地方",
+            "因為他是長官的親戚"
+          ],
+          "question": "為什麼老爺爺的兒子沒有被徵召入伍去打仗？",
+          "hint": "請看第四段關於戰爭發生時兒子的狀況。",
+          "explanation": "兒子因為之前從馬背摔下摔斷了腿，無法上戰場，因而保全了性命。",
+          "answer_index": 1
+        },
+        {
+          "question_id": "q3",
+          "type": "single_choice",
+          "options": [
+            "鄰居前來祝賀，老爺爺卻擔憂這不一定是好事",
+            "鄰居非常生氣，老爺爺卻歡天喜地大肆慶祝",
+            "大家決定把新馬賣掉平分錢",
+            "老爺爺把新馬送給了鄰居"
+          ],
+          "question": "當跑走的馬帶回另一匹健壯駿馬時，鄰居的反應和老爺爺有何不同？",
+          "hint": "看第二段鄰居前來賀喜時老爺爺的回答與神情。",
+          "explanation": "第二段寫著鄰居紛紛前來祝賀，老爺爺卻皺眉認為不見得是好事。",
+          "answer_index": 0
+        },
+        {
+          "question_id": "q4",
+          "type": "single_choice",
+          "options": [
+            "買彩券中大獎開心地請客",
+            "遇到暫時的挫折或壞事，但可能帶來意想不到的好結果",
+            "不小心把鄰居的東西弄丟了裝作不知道",
+            "考試完全不念書只想碰運氣"
+          ],
+          "question": "成語「塞翁失馬，焉知非福」最適合用在什麼情況？",
+          "hint": "體會故事最後總結的「壞事與好事互相轉變」。",
+          "explanation": "這句成語常用來安慰遇到一時挫折的人，說明壞事背後可能隱含轉機與福氣。",
+          "answer_index": 1
+        },
+        {
+          "question_id": "q5",
+          "type": "single_choice",
+          "options": [
+            "千萬不要養馬，以免發生意外",
+            "發生好事時要大肆炫耀給鄰居看",
+            "面對人生的順境與逆境，都應保持平常心與智慧",
+            "只要受傷生病就不用為國家盡責任"
+          ],
+          "question": "這篇文章主要想傳遞的人生智慧是什麼？",
+          "hint": "思考故事最後一段老爺爺對世事變化的領悟。",
+          "explanation": "故事告訴我們福禍相依，面對人生的高低起伏應保持平靜與達觀的心境。",
+          "answer_index": 2
+        }
+      ],
+      "paragraphs": [
+        "古代靠近邊境的地方，住著一位老爺爺。有一天，他養的心愛駿馬突然跑丟了，鄰居們都跑來安慰他。老爺爺卻平靜地說：「這不一定是壞事呢！」",
+        "過了一段時間，這匹跑走的馬不僅自己回來了，還帶回了一匹北方邊境的健壯駿馬！鄰居們紛紛前來祝賀，老爺爺卻皺著眉頭說：「這也不一定是好事啊。」",
+        "老爺爺的兒子非常喜歡這匹新馬，每天騎著牠奔跑。沒想到有一天，他不小心從馬背上摔了下來，跌斷了一條腿。大家又來安慰老爺爺，老爺爺依然淡淡地說：「這也許能換來好運。」",
+        "不久後，邊境爆發了戰爭，所有年輕健康的男子都被徵召入伍打仗，大多戰死沙場。而老爺爺的兒子因為腿傷不能打仗，保全了性命。這個故事告訴我們：好事和壞事有時會互相轉變，遇到不如意時不用過度悲傷。"
+      ],
+      "grade_range": "國小3-4年級",
+      "theme": "成語故事 / 智慧"
+    },
+    {
+      "id": "ZH_G56_01",
+      "tier": "upper",
+      "reading_time_sec": 90,
+      "title": "深海巨獸的生存智慧——抹香鯨",
+      "vocabulary": [
+        {
+          "term": "減壓症",
+          "pinyin": "ㄐㄧㄢˇ ㄧㄚ ㄓㄥˋ",
+          "desc": "環境壓力急劇降低時，體內溶解的氣體析出形成氣泡而引起的急性病症。"
+        },
+        {
+          "term": "回聲定位",
+          "pinyin": "ㄏㄨㄟˊ ㄕㄥ ㄉㄧㄥˋ ㄨㄟˋ",
+          "desc": "動物發射聲波並接收其反射回音，用以判定障礙物或獵物空間方位的機制。"
+        }
+      ],
+      "language": "zh",
+      "questions": [
+        {
+          "question_id": "q1",
+          "type": "single_choice",
+          "options": [
+            "喝大量海水維持體內壓力平衡",
+            "特殊的肋骨結構讓胸腔能隨水壓自然塌縮",
+            "利用頭部油脂形成堅硬的防護罩",
+            "加快心跳速度產生強大血液抗阻"
+          ],
+          "question": "抹香鯨在深海中如何克服肺部被高壓壓碎的危險？",
+          "hint": "注意第二段中提到的骨骼與胸腔特性。",
+          "explanation": "抹香鯨的肋骨結構特殊，胸腔能承受巨大水壓自然塌縮，保護肺部不致破裂。",
+          "answer_index": 1
+        },
+        {
+          "question_id": "q2",
+          "type": "single_choice",
+          "options": [
+            "用聲波震暈大王烏賊",
+            "向遠處同伴發出危險信號",
+            "利用聲波反射探測獵物位置",
+            "用來嚇跑潛水員與船隻"
+          ],
+          "question": "抹香鯨發出的高頻「喀嗒聲」，主要功能是什麼？",
+          "hint": "第三段提及『回聲定位』的原理。",
+          "explanation": "抹香鯨藉由聲音反彈的波形來掌握獵物位置，即回聲定位。",
+          "answer_index": 2
+        },
+        {
+          "question_id": "q3",
+          "type": "single_choice",
+          "options": [
+            "皮膚與厚厚的鯨脂層",
+            "大腦與心臟等關鍵核心器官",
+            "巨大的尾鰭與腹肌",
+            "腸胃等消化系統"
+          ],
+          "question": "抹香鯨在極端深潛憋氣時，體內的血液會優先供應哪些器官？",
+          "hint": "看第二段科學家對於抹香鯨潛水時血液供應的研究說明。",
+          "explanation": "第二段提到牠們潛水時「血液會優先供應大腦與心臟等重要器官」。",
+          "answer_index": 1
+        },
+        {
+          "question_id": "q4",
+          "type": "single_choice",
+          "options": [
+            "大王烏賊",
+            "大型白斑海豹",
+            "海龜與龍蝦",
+            "浮游微小磷蝦"
+          ],
+          "question": "抹香鯨在深海漆黑世界中，最主要捕捉的獵物是什麼？",
+          "hint": "第三段一開始有指名抹香鯨的主要食物來源。",
+          "explanation": "第三段寫道：「抹香鯨利用『回聲定位』來捕捉主要獵物——大王烏賊」。",
+          "answer_index": 0
+        },
+        {
+          "question_id": "q5",
+          "type": "single_choice",
+          "options": [
+            "作為發射與調節高頻聲波的天然聲學透鏡",
+            "發出耀眼光芒把烏賊吸引過來",
+            "散發出讓魚群昏迷的氣味",
+            "讓頭部變得很輕浮在水面上"
+          ],
+          "question": "抹香鯨的頭部含有大量油脂，這項構造在狩獵時扮演什麼關鍵角色？",
+          "hint": "看第三段關於頭部油脂與喀嗒聲的關係。",
+          "explanation": "抹香鯨頭部的鯨腦油能聚焦並傳導高頻喀嗒聲，是回聲定位系統的核心部位。",
+          "answer_index": 0
+        }
+      ],
+      "paragraphs": [
+        "抹香鯨是地球上體型最大的齒鯨，成年雄鯨身長可超過十六公尺。牠們是動物界著名的「深潛冠軍」，能一口氣潛入超過兩千公尺漆黑冰冷的深海，並在水下憋氣超過一個小時。",
+        "為什麼抹香鯨在極端的高壓下不會受傷？科學家發現，當抹香鯨潛水時，牠們的心跳會大幅放緩，血液會優先供應大腦與心臟等重要器官；此外，牠們的肋骨結構特殊，胸腔能承受巨大的水壓而自然塌縮，避免肺部受損。",
+        "在完全沒有光線的深海裡，抹香鯨利用「回聲定位」來捕捉主要獵物——大王烏賊。牠們的頭部含有大量油脂，能發出極高頻的喀嗒聲，透過聲音撞擊物體後反彈的波形，精確掌握獵物的位置與大小。"
+      ],
+      "grade_range": "國小5-6年級",
+      "theme": "環境生態 / 邏輯思考"
+    },
+    {
+      "id": "EN_G12_01",
+      "tier": "lower",
+      "reading_time_sec": 40,
+      "title": "Sammy the Little Frog",
+      "vocabulary": [
+        {
+          "term": "pond",
+          "phonetic": "/pɒnd/",
+          "desc": "A small area of still water."
+        },
+        {
+          "term": "lily pad",
+          "phonetic": "/ˈlɪl.i pæd/",
+          "desc": "A large round floating leaf of a water lily."
+        }
+      ],
+      "language": "en",
+      "questions": [
+        {
+          "question_id": "q1",
+          "type": "single_choice",
+          "options": [
+            "In a big tree",
+            "In a quiet blue pond",
+            "In a dark cave",
+            "Under the red sand"
+          ],
+          "question": "Where does Sammy the frog live?",
+          "hint": "Check the very first paragraph about where Sammy lives.",
+          "explanation": "The story says: 'He lives in a quiet blue pond.'",
+          "answer_index": 1
+        },
+        {
+          "question_id": "q2",
+          "type": "single_choice",
+          "options": [
+            "Red",
+            "Blue",
+            "Shiny yellow",
+            "Purple"
+          ],
+          "question": "What color is the butterfly that Sammy meets?",
+          "hint": "Look at paragraph 3 for the butterfly's color.",
+          "explanation": "The story mentions: 'One day, he sees a shiny yellow butterfly.'",
+          "answer_index": 2
+        },
+        {
+          "question_id": "q3",
+          "type": "single_choice",
+          "options": [
+            "Sleep all day long",
+            "Jump and hop across lily pads",
+            "Fly high in the sky",
+            "Dig deep holes in the dirt"
+          ],
+          "question": "What does Sammy the frog love to do most?",
+          "hint": "Look at paragraph 2 to see Sammy's favorite action.",
+          "explanation": "Paragraph 2 states: 'Sammy loves to jump. Hop, hop, hop!'",
+          "answer_index": 1
+        },
+        {
+          "question_id": "q4",
+          "type": "single_choice",
+          "options": [
+            "Little green",
+            "Bright orange",
+            "Pure white",
+            "Midnight black"
+          ],
+          "question": "What color is Sammy the frog?",
+          "hint": "Read the first sentence of the story.",
+          "explanation": "The story begins with: 'Sammy is a little green frog.'",
+          "answer_index": 0
+        },
+        {
+          "question_id": "q5",
+          "type": "single_choice",
+          "options": [
+            "Until lunchtime",
+            "Until sunset",
+            "Only for one minute",
+            "Until it started raining"
+          ],
+          "question": "Until what time did Sammy and the butterfly play together?",
+          "hint": "Check the very last sentence of the story.",
+          "explanation": "The final sentence says: 'They play together happily until sunset.'",
+          "answer_index": 1
+        }
+      ],
+      "paragraphs": [
+        "Sammy is a little green frog. He lives in a quiet blue pond.",
+        "Sammy loves to jump. Hop, hop, hop! He jumps from one lily pad to another.",
+        "One day, he sees a shiny yellow butterfly. 'Hello!' says Sammy. The butterfly flutters its wings and smiles. They play together happily until sunset."
+      ],
+      "grade_range": "國小1-2年級",
+      "theme": "Animals / Friendship"
+    },
+    {
+      "id": "EN_G34_01",
+      "tier": "middle",
+      "reading_time_sec": 65,
+      "title": "The Sleepy Planet Mars",
+      "vocabulary": [
+        {
+          "term": "planet",
+          "phonetic": "/ˈplæn.ɪt/",
+          "desc": "A large round object in space that moves around a star."
+        },
+        {
+          "term": "rusty",
+          "phonetic": "/ˈrʌs.ti/",
+          "desc": "Covered with rust (reddish-brown coating on iron)."
+        },
+        {
+          "term": "rover",
+          "phonetic": "/ˈrəʊ.vər/",
+          "desc": "A small robotic vehicle used for exploring other planets."
+        }
+      ],
+      "language": "en",
+      "questions": [
+        {
+          "question_id": "q1",
+          "type": "single_choice",
+          "options": [
+            "Because it is covered with burning fire",
+            "Because of red plants and flowers growing there",
+            "Because it is covered in rusty iron dust",
+            "Because the sun shines extra bright on it"
+          ],
+          "question": "Why does Mars look red in color?",
+          "hint": "Look at paragraph 2 to find out why Mars has that reddish color.",
+          "explanation": "Paragraph 2 explains that Mars is covered in rusty iron dust, just like an old rusty bicycle.",
+          "answer_index": 2
+        },
+        {
+          "question_id": "q2",
+          "type": "single_choice",
+          "options": [
+            "Taking photos and collecting rock samples",
+            "Building houses for humans",
+            "Growing vegetables in space",
+            "Swimming in deep lakes"
+          ],
+          "question": "What are 'rovers' doing on Mars right now?",
+          "hint": "Look at the sentences describing what human robots do on Mars.",
+          "explanation": "Paragraph 3 states: 'They take high-resolution photos and collect rock samples.'",
+          "answer_index": 0
+        },
+        {
+          "question_id": "q3",
+          "type": "single_choice",
+          "options": [
+            "Our far away enemy",
+            "Our neighbor in the solar system",
+            "The center of the galaxy",
+            "A giant star made of gas"
+          ],
+          "question": "In the solar system, what is Mars called in relationship to Earth?",
+          "hint": "Check the end of paragraph 1.",
+          "explanation": "Paragraph 1 introduces Mars as 'our neighbor in the solar system'.",
+          "answer_index": 1
+        },
+        {
+          "question_id": "q4",
+          "type": "single_choice",
+          "options": [
+            "A shiny new red sports car",
+            "A ripe red strawberry",
+            "An old bicycle left in the rain",
+            "A red brick wall"
+          ],
+          "question": "What everyday item does the author compare Mars' red ground to?",
+          "hint": "Read paragraph 2 about rusty metal.",
+          "explanation": "Paragraph 2 mentions: 'Just like an old bicycle left in the rain turns reddish-brown'.",
+          "answer_index": 2
+        },
+        {
+          "question_id": "q5",
+          "type": "single_choice",
+          "options": [
+            "Astronauts visiting Mars and building a space village",
+            "Moving the entire Earth to Mars",
+            "Destroying Mars with rockets",
+            "Using Mars as a garbage dump"
+          ],
+          "question": "What hope for the future is mentioned in the final sentence?",
+          "hint": "Look at the dream described at the end of the text.",
+          "explanation": "The text ends with the hope that astronauts will build the first space village on Mars.",
+          "answer_index": 0
+        }
+      ],
+      "paragraphs": [
+        "When you look at the night sky, you might spot a bright reddish dot. That is Mars, our neighbor in the solar system!",
+        "Why is Mars red? Scientists tell us that Mars is covered in rusty iron dust. Just like an old bicycle left in the rain turns reddish-brown, Mars has lots of iron in its ground.",
+        "Today, human robots called 'rovers' roll across the surface of Mars. They take high-resolution photos and collect rock samples. Maybe in the future, astronauts will visit Mars and build the first space village there!"
+      ],
+      "grade_range": "國小3-4年級",
+      "theme": "Space / Wonders of Science"
+    },
+    {
+      "id": "EN_G56_01",
+      "tier": "upper",
+      "reading_time_sec": 80,
+      "title": "The Mystery of the Whispering Forest",
+      "vocabulary": [
+        {
+          "term": "mysterious",
+          "phonetic": "/mɪˈstɪə.ri.əs/",
+          "desc": "Strange, not known or understood."
+        },
+        {
+          "term": "hollow",
+          "phonetic": "/ˈhɒl.əʊ/",
+          "desc": "Having an empty space or hole inside."
+        },
+        {
+          "term": "breeze",
+          "phonetic": "/briːz/",
+          "desc": "A gentle, light wind."
+        }
+      ],
+      "language": "en",
+      "questions": [
+        {
+          "question_id": "q1",
+          "type": "single_choice",
+          "options": [
+            "Spirits hiding in the trees",
+            "Mountain breeze blowing through hollow woodpecker holes",
+            "Woodpeckers trying to speak to Leo",
+            "Villagers whispering behind bushes"
+          ],
+          "question": "What created the whispering sound Leo heard in the forest?",
+          "hint": "Check paragraph 3 for what Leo discovered on the tree trunk.",
+          "explanation": "Leo found that wind blowing through the hollow holes made by woodpeckers created the whistle.",
+          "answer_index": 1
+        },
+        {
+          "question_id": "q2",
+          "type": "single_choice",
+          "options": [
+            "Having an empty space or hole inside",
+            "Extremely heavy and difficult to lift",
+            "Very bright with colorful lights",
+            "Very wet and cold"
+          ],
+          "question": "In this story, what is the meaning of the word 'hollow'?",
+          "hint": "Woodpeckers pecked into the tree to create these spaces.",
+          "explanation": "'Hollow' means having an empty hole or void inside.",
+          "answer_index": 0
+        },
+        {
+          "question_id": "q3",
+          "type": "single_choice",
+          "options": [
+            "In the middle of a big noisy city",
+            "Near Leo's grandfather's farm",
+            "On top of a snow-covered mountain",
+            "Underneath an ancient castle"
+          ],
+          "question": "Where was the Whispering Forest located?",
+          "hint": "Look at paragraph 1 for the location of the forest.",
+          "explanation": "Paragraph 1 says he walked into the forest 'near his grandfather's farm'.",
+          "answer_index": 1
+        },
+        {
+          "question_id": "q4",
+          "type": "single_choice",
+          "options": [
+            "Woodpeckers",
+            "Bears sharpening their claws",
+            "Wild bees building hives",
+            "Squirrels hiding nuts"
+          ],
+          "question": "What kind of animal made the small openings in the oak tree trunk?",
+          "hint": "Read paragraph 3 to see who made the holes.",
+          "explanation": "Paragraph 3 notes: 'The trunk had several hollow holes made by woodpeckers.'",
+          "answer_index": 0
+        },
+        {
+          "question_id": "q5",
+          "type": "single_choice",
+          "options": [
+            "The forest was dangerous and he should never return",
+            "Nature was simply playing its own musical instrument",
+            "His grandfather was playing a trick on him",
+            "The trees were truly magical talking creatures"
+          ],
+          "question": "What did Leo realize at the end of his exploration?",
+          "hint": "Check the last sentence comparing the forest to a musical instrument.",
+          "explanation": "The story concludes: 'The forest wasn't haunted or magical—it was nature playing its own musical instrument!'",
+          "answer_index": 1
+        }
+      ],
+      "paragraphs": [
+        "Leo loved adventures. One sunny afternoon, he walked into the Whispering Forest near his grandfather's farm. People in the village said the trees could talk, but Leo wanted to find out the truth for himself.",
+        "As he walked deeper along the trail, the sunlight turned golden. Suddenly, he heard a soft, whistling sound: 'Whoosh... shhh...' It sounded just like a human whispering secrets! Leo held his breath and stopped. He touched an ancient oak tree beside him.",
+        "Looking closely, Leo smiled. The trunk had several hollow holes made by woodpeckers. Whenever the mountain breeze blew through these small openings, it created a gentle whistle. The forest wasn't haunted or magical—it was nature playing its own musical instrument!"
+      ],
+      "grade_range": "國小5-6年級",
+      "theme": "Adventure / Mystery"
+    }
+  ],
+  "game_meta": {
+    "description": "涵蓋國小 1~6 年級（每篇固定 5 道精選題目）",
+    "title": "閱讀奇幻島：中英雙語自學冒險 (Reading Adventure Island)",
+    "grade_tiers": {
+      "middle": {
+        "word_count_en": "70-120 words",
+        "label": "中年級 (3-4年級)",
+        "word_count_zh": "180-280字"
+      },
+      "upper": {
+        "word_count_en": "130-220 words",
+        "label": "高年級 (5-6年級)",
+        "word_count_zh": "300-450字"
+      },
+      "lower": {
+        "word_count_en": "30-60 words",
+        "label": "低年級 (1-2年級)",
+        "word_count_zh": "80-150字"
+      }
+    }
+  }
+}

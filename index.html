@@ -1,0 +1,2515 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>閱讀奇幻島 - 寵物養成與雙語自學冒險</title>
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --secondary: #f59e0b;
+      --success: #10b981;
+      --danger: #ef4444;
+      --bg: #f1f5f9;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans TC", sans-serif; }
+    body { background-color: var(--bg); color: var(--text); padding: 16px; }
+    .container { max-width: 960px; margin: 0 auto; }
+
+    /* 頂部導航與狀態面板 */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: white;
+      padding: 12px 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .brand-title { font-size: 1.4rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+
+    /* 寵物狀態小卡 */
+    .pet-widget {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #f8fafc;
+      padding: 8px 16px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+    }
+    .pet-avatar {
+      font-size: 2.2rem;
+      animation: bounce 2s infinite ease-in-out;
+      cursor: pointer;
+      user-select: none;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+    .pet-info { display: flex; flex-direction: column; gap: 4px; }
+    .pet-name-lv { font-size: 0.9rem; font-weight: 700; color: #334155; }
+    .stat-row { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
+    .exp-bar-bg { width: 100px; height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; }
+    .exp-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #6366f1, #a855f7); transition: width 0.3s; }
+    .coins-badge { background: #fef3c7; color: #b45309; padding: 2px 8px; border-radius: 12px; font-weight: 700; font-size: 0.85rem; }
+
+    /* 寵物互動撫摸彈窗/餵食區 */
+    .pet-modal {
+      background: linear-gradient(135deg, #eef2ff, #fdf4ff);
+      border: 2px dashed #c7d2fe;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .pet-dialogue { font-size: 0.95rem; font-weight: 600; color: #4338ca; }
+    .pet-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .feed-btn {
+      background: var(--secondary);
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.15s;
+    }
+    .feed-btn:hover { background: #d97706; }
+
+    /* 寵物技能列 (Pet Skills) */
+    .skills-section {
+      background: #ffffff;
+      border: 2px solid #e0e7ff;
+      border-radius: 14px;
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px -1px rgba(99,102,241,0.06);
+    }
+    .skills-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .skills-title {
+      font-weight: 800;
+      color: var(--primary);
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .skill-card {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+    }
+    .skill-card.locked {
+      opacity: 0.6;
+      background: #f1f5f9;
+      border-style: dashed;
+    }
+    .skill-name-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+    .skill-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+    .skill-cast-btn {
+      margin-top: 4px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: none;
+      background: var(--primary);
+      color: white;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.15s;
+    }
+    .skill-cast-btn:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+    }
+    .skill-cast-btn:hover:not(:disabled) {
+      background: var(--primary-hover);
+    }
+
+    /* 導覽列與過濾 */
+    .filter-bar { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+    .filter-btn { padding: 6px 14px; border-radius: 20px; border: 1px solid #cbd5e1; background: white; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: all 0.2s; }
+    .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+    /* 關卡選單卡片 */
+    .level-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 30px; }
+    .level-card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      border: 2px solid transparent;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+    .level-card:hover { transform: translateY(-4px); border-color: var(--primary); box-shadow: 0 10px 15px -3px rgba(99,102,241,0.15); }
+    .badge { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; margin-bottom: 8px; }
+    .badge-zh { background: #fee2e2; color: #dc2626; }
+    .badge-en { background: #dbeafe; color: #2563eb; }
+    .badge-tier { background: #f1f5f9; color: #475569; margin-left: 4px; }
+    .card-title { font-size: 1.15rem; font-weight: 800; margin-bottom: 8px; color: #1e293b; }
+    .card-meta { font-size: 0.85rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; }
+
+    /* 閱讀挑戰主區塊 */
+    .game-area { display: none; background: white; border-radius: 20px; padding: 28px; box-shadow: 0 10px 20px -5px rgba(0,0,0,0.08); }
+    .top-action-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .back-btn { background: #f1f5f9; border: none; padding: 8px 16px; border-radius: 10px; cursor: pointer; font-size: 0.95rem; font-weight: 600; color: #475569; }
+    .back-btn:hover { background: #e2e8f0; }
+
+    /* 語音控制條 */
+    .tts-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      padding: 6px 14px;
+      border-radius: 30px;
+    }
+    .tts-btn {
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      cursor: pointer;
+      color: #1d4ed8;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 700;
+    }
+    .tts-btn:hover { opacity: 0.8; }
+    .tts-status { font-size: 0.8rem; color: #3b82f6; font-weight: 600; }
+
+    /* 文本閱讀區 */
+    .reading-box {
+      background: #fbfcfe;
+      border-left: 5px solid var(--primary);
+      padding: 20px;
+      border-radius: 0 12px 12px 0;
+      margin-bottom: 24px;
+      line-height: 2;
+      font-size: 1.15rem;
+      color: #1e293b;
+      letter-spacing: 0.5px;
+    }
+    .reading-box p { margin-bottom: 14px; }
+    .reading-box p:last-child { margin-bottom: 0; }
+
+    /* 單詞發音標籤 */
+    .vocab-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 12px; padding: 14px 18px; margin-bottom: 24px; }
+    .vocab-title { font-size: 0.95rem; font-weight: 700; color: #b45309; margin-bottom: 10px; }
+    .vocab-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+    .vocab-tag {
+      background: white;
+      border: 1px solid #fcd34d;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.1s;
+    }
+    .vocab-tag:hover { transform: scale(1.03); }
+    .speak-word-icon { color: var(--primary); }
+
+    /* 題目區 */
+    .quiz-card { margin-bottom: 20px; padding: 20px; border: 2px solid #e2e8f0; border-radius: 14px; background: #fafafa; }
+    .question-text { font-weight: 700; font-size: 1.1rem; margin-bottom: 14px; color: #0f172a; }
+    .options-list { display: flex; flex-direction: column; gap: 10px; }
+    .opt-btn {
+      text-align: left;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      background: white;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.15s;
+      font-weight: 500;
+    }
+    .opt-btn:hover:not(:disabled) { background: #f8fafc; border-color: var(--primary); }
+    .opt-btn.correct { background: #dcfce7 !important; border-color: #22c55e !important; color: #15803d; font-weight: bold; }
+    .opt-btn.wrong { background: #fee2e2 !important; border-color: #ef4444 !important; color: #b91c1c; }
+
+    /* 回饋提示盒 */
+    .feedback-box { margin-top: 14px; padding: 12px 16px; border-radius: 8px; font-size: 0.95rem; display: none; line-height: 1.6; }
+    .feedback-hint { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+    .feedback-correct { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+
+    /* 獎勵打地鼠中英配對小遊戲 (Whack-a-Mole Vocab Game) */
+    .mini-game-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(15, 23, 42, 0.85);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+    .mini-game-card {
+      background: #ffffff;
+      border-radius: 24px;
+      max-width: 650px;
+      width: 100%;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35);
+      border: 4px solid #facc15;
+    }
+    .mole-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .mole-stat {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #1e293b;
+      background: #fef08a;
+      padding: 6px 14px;
+      border-radius: 20px;
+    }
+    .target-prompt-box {
+      background: linear-gradient(135deg, #e0e7ff, #ede9fe);
+      border: 2px solid #818cf8;
+      border-radius: 16px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+    }
+    .target-word-title {
+      font-size: 0.85rem;
+      color: #4338ca;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .target-word-display {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: #312e81;
+      letter-spacing: 1px;
+    }
+    .mole-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .mole-hole {
+      background: #78350f;
+      border: 4px solid #451a03;
+      border-radius: 16px;
+      height: 96px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      user-select: none;
+      box-shadow: inset 0 8px 10px rgba(0,0,0,0.5);
+    }
+    .mole-creature {
+      position: absolute;
+      width: 90%;
+      height: 80%;
+      bottom: -100%;
+      background: #fbbf24;
+      border: 2px solid #d97706;
+      border-radius: 14px 14px 6px 6px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: #78350f;
+      transition: bottom 0.15s ease-out;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+    .mole-creature.up {
+      bottom: 6px;
+    }
+    .mole-creature.whacked-correct {
+      background: #4ade80 !important;
+      border-color: #16a34a !important;
+      color: #14532d !important;
+      transform: scale(0.92);
+    }
+    .mole-creature.whacked-wrong {
+      background: #f87171 !important;
+      border-color: #dc2626 !important;
+      color: #7f1d1d !important;
+      transform: scale(0.92);
+    }
+
+    /* 滑鼠反白劃詞翻譯懸浮小氣泡 (Selection Dictionary Tooltip) */
+    .word-tooltip {
+      position: absolute;
+      display: none;
+      z-index: 9999;
+      background: #1e293b;
+      color: #ffffff;
+      border-radius: 12px;
+      padding: 10px 14px;
+      box-shadow: 0 10px 25px -3px rgba(0,0,0,0.3);
+      font-size: 0.88rem;
+      max-width: 280px;
+      pointer-events: auto;
+      border: 1px solid #475569;
+      animation: fadeInTooltip 0.15s ease-out;
+    }
+    @keyframes fadeInTooltip {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .tooltip-arrow {
+      position: absolute;
+      bottom: -6px;
+      left: 20px;
+      width: 0; height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 6px solid #1e293b;
+    }
+    .tooltip-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .tooltip-word {
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: #38bdf8;
+    }
+    .tooltip-speak-btn {
+      background: #334155;
+      border: none;
+      color: #f8fafc;
+      border-radius: 6px;
+      padding: 3px 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.15s;
+    }
+    .tooltip-speak-btn:hover {
+      background: #475569;
+      color: #38bdf8;
+    }
+    .tooltip-trans {
+      color: #f1f5f9;
+      font-size: 0.92rem;
+      line-height: 1.4;
+      font-weight: 500;
+    }
+  </style>
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- 頂部資訊與寵物狀態列 -->
+  <div class="top-bar">
+    <div class="brand-title">
+      <span>🏝️</span> 閱讀奇幻島
+    </div>
+
+    <!-- 寵物養成即時資訊卡 -->
+    <div class="pet-widget" id="petWidget">
+      <div class="pet-avatar" id="petAvatar" onclick="petInteract()" title="摸摸小寵物！">🐣</div>
+      <div class="pet-info">
+        <div class="pet-name-lv">
+          <span id="petName">泡泡精靈</span> · <span id="petLevel">Lv.1 破殼幼體</span>
+        </div>
+        <div class="stat-row">
+          <span>❤️ 生命精華:</span>
+          <div class="exp-bar-bg">
+            <div class="exp-bar-fill" id="expFill"></div>
+          </div>
+          <span id="expText">0/100 HP</span>
+        </div>
+      </div>
+      <div class="coins-badge">🪙 <span id="coinCount">0</span></div>
+    </div>
+  </div>
+
+  <!-- 寵物互動與餵食區 -->
+  <div class="pet-modal" id="petBanner">
+    <div class="pet-dialogue" id="petDialogue">
+      「主人，今天我們來讀哪篇故事呢？答對題目賺金幣可以買點心給我吃喔！」
+    </div>
+    <div class="pet-actions">
+      <button class="feed-btn" onclick="feedPet(30)">
+        🍎 餵食點心 (需 30🪙)
+      </button>
+      <button class="feed-btn" style="background:#8b5cf6;" onclick="feedPet(60)">
+        🍖 豪華大餐 (需 60🪙)
+      </button>
+    </div>
+  </div>
+
+  <!-- 寵物專屬技能修煉所 -->
+  <div class="skills-section">
+    <div class="skills-header">
+      <div class="skills-title">⚡ 寵物專屬閱讀技能 (隨等級解鎖，可在答題時使用)</div>
+      <div style="font-size:0.85rem; color:var(--text-muted);">答題遇到困難時召喚寵物相助！</div>
+    </div>
+    <div class="skills-grid" id="skillsGrid"></div>
+  </div>
+
+  <!-- 年級與語言過濾器 -->
+  <div class="filter-bar" id="filterBar">
+    <button class="filter-btn active" data-filter="all">全部關卡</button>
+    <button class="filter-btn" data-filter="lower">低年級 (1-2年級)</button>
+    <button class="filter-btn" data-filter="middle">中年級 (3-4年級)</button>
+    <button class="filter-btn" data-filter="upper">高年級 (5-6年級)</button>
+    <button class="filter-btn" data-filter="zh">中文限定</button>
+    <button class="filter-btn" data-filter="en">英文限定</button>
+    <button class="filter-btn" style="background:#10b981; color:white; border-color:#10b981;" onclick="openAddStoryModal()">➕ 快速匯入新故事</button>
+  </div>
+
+  <!-- 新增故事互動彈窗 Modal (純文字極速模式) -->
+  <div id="addStoryModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.55); z-index:999; justify-content:center; align-items:center; padding:16px;">
+    <div style="background:white; border-radius:18px; max-width:620px; width:100%; max-height:92vh; overflow-y:auto; padding:24px; box-shadow:0 20px 25px -5px rgba(0,0,0,0.25);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <h3 style="color:var(--primary); font-size:1.35rem; display:flex; align-items:center; gap:6px;">
+          <span>📝</span> 純文字極速匯入故事
+        </h3>
+        <button onclick="closeAddStoryModal()" style="border:none; background:none; font-size:1.4rem; cursor:pointer;">✖</button>
+      </div>
+      <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:16px; line-height:1.5;">
+        完全不需要任何代碼或複雜格式！只要把故事文章直接貼上來，系統會自動分段、提取重點詞彙、並自動生成閱讀測驗題目！
+      </p>
+
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <div>
+          <label style="font-size:0.9rem; font-weight:700; color:#334155; display:block; margin-bottom:4px;">故事標題（可選）：</label>
+          <input type="text" id="quickStoryTitle" placeholder="例如：三隻小豬的冒險（留空則自動命名）" style="width:100%; padding:9px 12px; border-radius:8px; border:1px solid #cbd5e1; font-size:0.95rem;">
+        </div>
+
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <div style="flex:1; min-width:140px;">
+            <label style="font-size:0.85rem; font-weight:700; color:#334155; display:block; margin-bottom:4px;">語言：</label>
+            <select id="quickStoryLang" style="width:100%; padding:8px 10px; border-radius:8px; border:1px solid #cbd5e1; font-size:0.9rem; background:white;">
+              <option value="auto">自動判斷 (中文 / 英文)</option>
+              <option value="zh">中文</option>
+              <option value="en">English (英文)</option>
+            </select>
+          </div>
+          <div style="flex:1; min-width:140px;">
+            <label style="font-size:0.85rem; font-weight:700; color:#334155; display:block; margin-bottom:4px;">年級對象：</label>
+            <select id="quickStoryTier" style="width:100%; padding:8px 10px; border-radius:8px; border:1px solid #cbd5e1; font-size:0.9rem; background:white;">
+              <option value="lower">低年級 (1-2年級)</option>
+              <option value="middle" selected>中年級 (3-4年級)</option>
+              <option value="upper">高年級 (5-6年級)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <label style="font-size:0.9rem; font-weight:700; color:#334155;">請貼上故事文章內容：</label>
+            <button onclick="fillPlainTextSample()" style="font-size:0.8rem; padding:3px 8px; border-radius:6px; border:1px solid #cbd5e1; background:#f8fafc; cursor:pointer;">填入範例文章測試</button>
+          </div>
+          <textarea id="quickStoryText" rows="9" style="width:100%; border:1px solid #cbd5e1; border-radius:8px; padding:12px; font-size:0.95rem; line-height:1.6;" placeholder="在此直接貼上任何中文或英文純文字故事..."></textarea>
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+        <button onclick="closeAddStoryModal()" style="padding:8px 16px; border-radius:8px; border:1px solid #cbd5e1; background:white; cursor:pointer; font-weight:600;">取消</button>
+        <button onclick="generateStoryFromPlainText()" style="padding:10px 20px; border-radius:8px; border:none; background:var(--primary); color:white; font-weight:700; cursor:pointer; font-size:0.95rem; box-shadow:0 4px 6px -1px rgba(99,102,241,0.3);">🚀 一鍵自動生成關卡</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 關卡選單 -->
+  <div class="level-grid" id="levelGrid"></div>
+
+  <!-- 遊戲進行區 -->
+  <div class="game-area" id="gameArea">
+    <div class="top-action-bar">
+      <button class="back-btn" onclick="backToLevels()">← 返回關卡選單</button>
+      
+      <!-- 關卡戰鬥技能快捷欄 -->
+      <div id="inGameSkillBar" style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;"></div>
+
+      <!-- 語音朗讀控制元件 -->
+      <div class="tts-controls">
+        <button class="tts-btn" id="ttsPlayBtn" onclick="toggleReadPassage()">
+          <span id="ttsIcon">🔊</span>
+          <span id="ttsLabel">朗讀全文</span>
+        </button>
+        <span class="tts-status" id="ttsStatus"></span>
+      </div>
+    </div>
+
+    <div id="gameContent"></div>
+  </div>
+
+  <!-- 獎勵打地鼠中英配對小遊戲 Modal (Whack-a-Mole) -->
+  <div class="mini-game-modal" id="moleModal">
+    <div class="mini-game-card">
+      <div class="mole-header">
+        <div class="mole-stat">⏱️ 倒數: <span id="moleTimer">60</span>s</div>
+        <h3 style="color:#b45309; font-size:1.3rem;">🐹 中英配對打地鼠！</h3>
+        <div class="mole-stat">⭐ 得分: <span id="moleScore">0</span></div>
+      </div>
+
+      <!-- 目標單字提示區 -->
+      <div class="target-prompt-box">
+        <div class="target-word-title" id="targetPromptTitle">請打擊對應的中文翻譯地鼠：</div>
+        <div class="target-word-display" id="targetWordDisplay">Apple</div>
+      </div>
+
+      <!-- 9 個地鼠洞 -->
+      <div class="mole-grid" id="moleGrid">
+        <div class="mole-hole" onclick="hitMole(0)"><div class="mole-creature" id="mole0"></div></div>
+        <div class="mole-hole" onclick="hitMole(1)"><div class="mole-creature" id="mole1"></div></div>
+        <div class="mole-hole" onclick="hitMole(2)"><div class="mole-creature" id="mole2"></div></div>
+        <div class="mole-hole" onclick="hitMole(3)"><div class="mole-creature" id="mole3"></div></div>
+        <div class="mole-hole" onclick="hitMole(4)"><div class="mole-creature" id="mole4"></div></div>
+        <div class="mole-hole" onclick="hitMole(5)"><div class="mole-creature" id="mole5"></div></div>
+        <div class="mole-hole" onclick="hitMole(6)"><div class="mole-creature" id="mole6"></div></div>
+        <div class="mole-hole" onclick="hitMole(7)"><div class="mole-creature" id="mole7"></div></div>
+        <div class="mole-hole" onclick="hitMole(8)"><div class="mole-creature" id="mole8"></div></div>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:0.85rem; color:#64748b;">打中正確配對 +10分 並給寵物額外生命！</span>
+        <button onclick="endMoleGameEarly()" style="padding:6px 14px; border-radius:8px; border:1px solid #cbd5e1; background:#f8fafc; cursor:pointer; font-size:0.85rem;">結束並領取獎勵</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// =========================
+// 寵物養成系統狀態 (支援本機 LocalStorage 保存)
+// =========================
+let petState = {
+  name: "泡泡精靈",
+  level: 1,
+  exp: 0,
+  maxExp: 100,
+  coins: 50, // 初始贈送 50 金幣
+  stage: 0 // 0: 🐣幼體, 1: 🐥小鳥/幼龍, 2: 🦅大鷲/巨龍, 3: 👑神獸
+};
+
+const petEvolutions = [
+  { level: 1, form: "🐣", title: "Lv.1 破殼幼體" },
+  { level: 3, form: "🐥", title: "Lv.3 活潑小精靈" },
+  { level: 6, form: "🦉", title: "Lv.6 知識學士" },
+  { level: 10, form: "🐉", title: "Lv.10 傳奇書龍" }
+];
+
+// =========================
+// 寵物技能庫定義 (Pet Skills)
+// =========================
+const petSkills = [
+  {
+    id: "eliminate_wrong",
+    name: "透視迷霧",
+    icon: "👁️",
+    unlockLevel: 1,
+    costCoins: 10,
+    desc: "幫你消除一個確定錯誤的干擾選項！"
+  },
+  {
+    id: "highlight_hint",
+    name: "智慧靈光",
+    icon: "💡",
+    unlockLevel: 2,
+    costCoins: 15,
+    desc: "自動直接顯示本題的核心線索提示，不扣分！"
+  },
+  {
+    id: "double_reward",
+    name: "幸運金幣術",
+    icon: "🍀",
+    unlockLevel: 4,
+    costCoins: 20,
+    desc: "下一題若答對，獲得的經驗值與金幣全部翻倍 (x2)！"
+  },
+  {
+    id: "auto_solve",
+    name: "書龍真言",
+    icon: "🐲",
+    unlockLevel: 7,
+    costCoins: 40,
+    desc: "寵物直接釋放神聖能量，替你自動解開當前題目！"
+  }
+];
+
+let activeBuffs = {
+  doubleReward: false
+};
+
+function renderSkillsUI() {
+  const container = document.getElementById('skillsGrid');
+  if (!container) return;
+  container.innerHTML = '';
+
+  petSkills.forEach(skill => {
+    const isUnlocked = petState.level >= skill.unlockLevel;
+    const card = document.createElement('div');
+    card.className = `skill-card ${isUnlocked ? '' : 'locked'}`;
+    
+    card.innerHTML = `
+      <div class="skill-name-row">
+        <span>${skill.icon} ${skill.name}</span>
+        <span style="font-size:0.75rem; color:${isUnlocked ? '#10b981' : '#94a3b8'};">
+          ${isUnlocked ? '已掌握' : `需 Lv.${skill.unlockLevel}`}
+        </span>
+      </div>
+      <div class="skill-desc">${skill.desc}</div>
+      <div style="font-size:0.75rem; color:#b45309; font-weight:700;">消耗: ${skill.costCoins} 🪙</div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function renderInGameSkillBar() {
+  const bar = document.getElementById('inGameSkillBar');
+  if (!bar) return;
+  bar.innerHTML = '<span style="font-size:0.85rem; font-weight:700; color:var(--primary);">寵物助戰:</span>';
+
+  petSkills.forEach(skill => {
+    const isUnlocked = petState.level >= skill.unlockLevel;
+    if (isUnlocked) {
+      const btn = document.createElement('button');
+      btn.className = 'skill-cast-btn';
+      btn.innerHTML = `${skill.icon} ${skill.name} (${skill.costCoins}🪙)`;
+      btn.onclick = () => castSkill(skill.id, skill.costCoins);
+      bar.appendChild(btn);
+    }
+  });
+}
+
+function castSkill(skillId, cost) {
+  if (petState.coins < cost) {
+    alert("金幣不足，無法釋放此技能！快去多答題賺金幣吧！");
+    return;
+  }
+
+  const targetCard = document.getElementById('active_quiz_card');
+  if (!targetCard) return;
+
+  // 取得當前題目
+  const qIdx = currentQuestionQueue[currentQuestionCursor];
+  const currentQ = currentLevel.questions[qIdx];
+
+  if (skillId === 'eliminate_wrong') {
+    const wrongBtns = Array.from(targetCard.querySelectorAll('.opt-btn')).filter((btn, idx) => {
+      return idx !== currentQ.answer_index && !btn.classList.contains('wrong');
+    });
+    if (wrongBtns.length > 0) {
+      petState.coins -= cost;
+      savePetData();
+      wrongBtns[0].classList.add('wrong');
+      wrongBtns[0].disabled = true;
+      showPetDialogue(`👁️ 寵物發動【透視迷霧】！已幫你排除一個錯誤選項！`);
+    } else {
+      alert("錯誤選項已經都被排除了！");
+    }
+  } else if (skillId === 'highlight_hint') {
+    petState.coins -= cost;
+    savePetData();
+    const feedback = targetCard.querySelector('.feedback-box');
+    feedback.className = 'feedback-box feedback-hint';
+    feedback.style.display = 'block';
+    feedback.innerHTML = `💡 <strong>【智慧靈光】核心線索：</strong> ${currentQ.hint}`;
+    showPetDialogue(`💡 寵物發動【智慧靈光】！已為你顯現本題的解題線索！`);
+  } else if (skillId === 'double_reward') {
+    petState.coins -= cost;
+    savePetData();
+    activeBuffs.doubleReward = true;
+    showPetDialogue(`🍀 寵物發動【幸運金幣術】！本題答對生命精華與金幣翻倍！`);
+    alert("🍀 幸運加倍發動！答對生命精華 +60 HP！");
+  } else if (skillId === 'auto_solve') {
+    petState.coins -= cost;
+    savePetData();
+    const correctBtn = targetCard.querySelectorAll('.opt-btn')[currentQ.answer_index];
+    correctBtn.click();
+    showPetDialogue(`🐲 寵物釋放【書龍真言】！神聖力量直接為你解開了這道題！`);
+  }
+}
+
+function loadPetData() {
+  const saved = localStorage.getItem('reading_game_pet');
+  if (saved) {
+    try { petState = JSON.parse(saved); } catch (e) {}
+  }
+  updatePetUI();
+}
+
+function savePetData() {
+  localStorage.setItem('reading_game_pet', JSON.stringify(petState));
+  updatePetUI();
+}
+
+function updatePetUI() {
+  document.getElementById('coinCount').innerText = petState.coins;
+  document.getElementById('petLevel').innerText = `Lv.${petState.level}`;
+  document.getElementById('expText').innerText = `${petState.exp}/${petState.maxExp} ❤️`;
+  const pct = Math.min(100, (petState.exp / petState.maxExp) * 100);
+  document.getElementById('expFill').style.width = `${pct}%`;
+
+  // 檢查外型進化
+  let currentForm = petEvolutions[0].form;
+  let currentTitle = petEvolutions[0].title;
+  for (let evo of petEvolutions) {
+    if (petState.level >= evo.level) {
+      currentForm = evo.form;
+      currentTitle = evo.title;
+    }
+  }
+  document.getElementById('petAvatar').innerText = currentForm;
+  document.getElementById('petLevel').innerText = currentTitle;
+
+  // 同步刷新技能面板
+  renderSkillsUI();
+  renderInGameSkillBar();
+}
+
+function gainExpAndCoins(expGain, coinGain) {
+  petState.exp += expGain;
+  petState.coins += coinGain;
+  
+  // 升級判定
+  if (petState.exp >= petState.maxExp) {
+    petState.exp -= petState.maxExp;
+    petState.level += 1;
+    petState.maxExp = Math.round(petState.maxExp * 1.3);
+    showPetDialogue(`🎉 哇！小寵物升級到 ${petState.level} 級了！智慧與力量大增！`);
+  }
+  savePetData();
+}
+
+function petInteract() {
+  const quotes = [
+    "「摸摸好舒服喔！謝謝主人～繼續加油讀書！」",
+    "「我正在吸收書本裡的智慧微光呢～」",
+    "「多聽語音朗讀，英文中文都可以進步更快喔！」",
+    "「好想吃紅蘋果喔！有金幣可以買給我吃嗎？」"
+  ];
+  showPetDialogue(quotes[Math.floor(Math.random() * quotes.length)]);
+}
+
+function feedPet(cost) {
+  if (petState.coins < cost) {
+    showPetDialogue("「金幣不夠了！快去挑戰更多閱讀題目賺取金幣吧～」");
+    return;
+  }
+  petState.coins -= cost;
+  const expReward = cost === 30 ? 40 : 100;
+  gainExpAndCoins(expReward, 0);
+  showPetDialogue(`😋「嚼嚼嚼...好好吃喔！獲得了 ${expReward} 點成長經驗值！」`);
+}
+
+function showPetDialogue(msg) {
+  document.getElementById('petDialogue').innerText = msg;
+}
+
+// =========================
+// 語音朗讀系統 (Web Speech API)
+// =========================
+let currentUtterance = null;
+let isSpeaking = false;
+let currentLanguage = 'zh-TW';
+let currentFullText = '';
+
+function speakText(text, lang) {
+  if (!('speechSynthesis' in window)) {
+    alert("您的瀏覽器暫時不支援語音合成功能，建議使用 Chrome 或 Edge 瀏覽器！");
+    return;
+  }
+  window.speechSynthesis.cancel(); // 停止目前所有發音
+
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = lang === 'en' ? 'en-US' : 'zh-TW';
+  utter.rate = lang === 'en' ? 0.9 : 0.95; // 稍微放慢一點點以利學生自學聆聽
+  
+  utter.onstart = () => {
+    isSpeaking = true;
+    updateTTSButton(true);
+  };
+  utter.onend = () => {
+    isSpeaking = false;
+    updateTTSButton(false);
+  };
+  utter.onerror = () => {
+    isSpeaking = false;
+    updateTTSButton(false);
+  };
+
+  currentUtterance = utter;
+  window.speechSynthesis.speak(utter);
+}
+
+function toggleReadPassage() {
+  if (isSpeaking) {
+    window.speechSynthesis.cancel();
+    isSpeaking = false;
+    updateTTSButton(false);
+  } else {
+    speakText(currentFullText, currentLanguage);
+  }
+}
+
+function updateTTSButton(speaking) {
+  const icon = document.getElementById('ttsIcon');
+  const label = document.getElementById('ttsLabel');
+  const status = document.getElementById('ttsStatus');
+  if (speaking) {
+    icon.innerText = "⏹️";
+    label.innerText = "停止朗讀";
+    status.innerText = "（朗讀中...）";
+  } else {
+    icon.innerText = "🔊";
+    label.innerText = "朗讀全文";
+    status.innerText = "";
+  }
+}
+
+// =========================
+// 遊戲關卡資料載入與畫面渲染
+// =========================
+let gameData = {
+  "game_meta": {
+    "title": "閱讀奇幻島：中英雙語自學冒險 (Reading Adventure Island)",
+    "description": "涵蓋國小 1~6 年級（每篇固定 5 道精選題目）",
+    "grade_tiers": {
+      "middle": {
+        "label": "中年級 (3-4年級)",
+        "word_count_zh": "180-280字",
+        "word_count_en": "70-120 words"
+      },
+      "lower": {
+        "label": "低年級 (1-2年級)",
+        "word_count_zh": "80-150字",
+        "word_count_en": "30-60 words"
+      },
+      "upper": {
+        "label": "高年級 (5-6年級)",
+        "word_count_zh": "300-450字",
+        "word_count_en": "130-220 words"
+      }
+    }
+  },
+  "levels": [
+    {
+      "vocabulary": [
+        {
+          "pinyin": "ㄔㄨˊ ㄘㄨㄣˊ",
+          "desc": "把東西收好留著以後用。",
+          "term": "儲存"
+        },
+        {
+          "pinyin": "ㄒㄧㄤˋ ㄕˊ",
+          "desc": "橡樹結出來的小堅果，很多小松鼠最愛吃。",
+          "term": "橡實"
+        }
+      ],
+      "paragraphs": [
+        "秋天到了，涼爽的微風吹過森林，樹葉都變成了金黃色。",
+        "小松鼠奇奇每天都很忙碌。牠在樹林裡跑來跑去，嘴巴裡塞滿了圓滾滾的橡實。小兔子看見了，好奇地問：「奇奇，你為什麼吃得這麼急呀？」",
+        "奇奇笑著說：「我不是現在吃！我是要把橡實藏在落葉底下和小洞裡。當寒冷的冬天來臨時，我就有美味的食物可以吃了！」"
+      ],
+      "id": "ZH_G12_01",
+      "tier": "lower",
+      "grade_range": "國小1-2年級",
+      "title": "小松鼠的秋天秘密",
+      "language": "zh",
+      "reading_time_sec": 45,
+      "theme": "動物生活 / 生活常識",
+      "questions": [
+        {
+          "answer_index": 1,
+          "hint": "看看文章最後一段奇奇是怎麼回答小兔子的喔！",
+          "options": [
+            "因為橡實壞掉了不能吃",
+            "為了準備冬天時有食物可以吃",
+            "想和森林裡的鄰居分享",
+            "因為嘴巴太小放不下"
+          ],
+          "explanation": "奇奇提到把橡實藏起來，是為了在寒冷的冬天裡能有食物吃。",
+          "question": "小松鼠奇奇為什麼要把橡實藏在土裡或落葉下？",
+          "type": "single_choice",
+          "question_id": "q1"
+        },
+        {
+          "answer_index": 2,
+          "hint": "文章第一句有寫到微風吹過森林時樹葉的顏色。",
+          "options": [
+            "深綠色",
+            "亮粉色",
+            "金黃色",
+            "雪白色"
+          ],
+          "explanation": "第一段寫道：「樹葉都變成了金黃色」。",
+          "question": "文章一開始提到秋天到了，樹葉變成了什麼顏色？",
+          "type": "single_choice",
+          "question_id": "q2"
+        },
+        {
+          "answer_index": 1,
+          "hint": "第二段寫著看見奇奇並好奇發問的動物。",
+          "options": [
+            "小狐狸",
+            "小兔子",
+            "大黑熊",
+            "貓頭鷹"
+          ],
+          "explanation": "第二段提到：「小兔子看見了，好奇地問...」。",
+          "question": "是森林裡的哪一隻小動物主動跑來問奇奇問題？",
+          "type": "single_choice",
+          "question_id": "q3"
+        },
+        {
+          "answer_index": 2,
+          "hint": "請看第二段形容奇奇嘴巴的句子。",
+          "options": [
+            "背在背上的小背包裡",
+            "用兩隻手緊緊抱著",
+            "塞滿在嘴巴裡面",
+            "藏在尾巴厚厚的毛裡"
+          ],
+          "explanation": "第二段寫道奇奇「嘴巴裡塞滿了圓滾滾的橡實」。",
+          "question": "奇奇是把很多顆橡實塞在哪裡運送的？",
+          "type": "single_choice",
+          "question_id": "q4"
+        },
+        {
+          "answer_index": 1,
+          "hint": "想想看奇奇在秋天就為冬天準備食物的行為。",
+          "options": [
+            "遇到好吃的食物一定要一口氣吃光",
+            "懂得提早做好準備，未雨綢繆",
+            "冬天就不用出門找朋友玩了",
+            "只管睡覺，不用思考明天的事"
+          ],
+          "explanation": "奇奇提早為寒冬儲備糧食，展現了懂得提早做好規劃與準備的美德。",
+          "question": "讀完這篇故事，我們能從小松鼠身上學到什麼好習慣？",
+          "type": "single_choice",
+          "question_id": "q5"
+        }
+      ]
+    },
+    {
+      "vocabulary": [
+        {
+          "pinyin": "ㄍㄨㄢ ㄔㄚˊ",
+          "desc": "仔細察看事物。",
+          "term": "觀察"
+        },
+        {
+          "pinyin": "ㄐㄧㄝˊ ㄍㄡˋ",
+          "desc": "各個組成部分之間的搭配與排列方式。",
+          "term": "結構"
+        },
+        {
+          "pinyin": "ㄈㄚ ㄇㄧㄥˊ",
+          "desc": "創造出前所未有的新事物或新方法。",
+          "term": "發明"
+        }
+      ],
+      "paragraphs": [
+        "你的球鞋或文具袋上，是不是常有一條「撕開時會發出刷刷聲」的神奇布條？這就是我們生活中常用的「魔鬼氈」，它的發明竟然源自一隻愛散步的狗！",
+        "大約八十年前，一位瑞士工程師帶著愛犬去森林散步。回家後，他發現狗狗的毛上和自己的褲管上，沾滿了一顆顆帶刺的芒刺植物果實，怎麼甩都甩不掉。",
+        "他沒有生氣，反而拿出顯微鏡仔細觀察。原來，這些小果實的尖端長滿了微小彎曲的「小鉤子」，只要碰到布料或動物毛皮上的「小圈圈」，就會緊緊勾住。",
+        "工程師靈機一動，模仿這種結構：一邊做成密密麻麻的塑膠小鉤，另一邊做成毛茸茸的柔軟細圈。兩者一壓就黏住，一拉又能撕開，這項模仿大自然的發明，如今成了全世界最受歡迎的生活好幫手！"
+      ],
+      "id": "ZH_G34_01",
+      "tier": "middle",
+      "grade_range": "國小3-4年級",
+      "title": "大自然的小發明家——魔鬼氈的由來",
+      "language": "zh",
+      "reading_time_sec": 75,
+      "theme": "科學發明 / 歷史故事",
+      "questions": [
+        {
+          "answer_index": 1,
+          "hint": "仔細看第三段工程師使用顯微鏡觀察到的結構說明。",
+          "options": [
+            "果實表面塗滿了黏稠的膠水",
+            "尖端長滿了能勾住毛圈的微小「小鉤子」",
+            "果實有吸盤可以吸住光滑表面",
+            "果實帶有磁鐵可以互相吸引"
+          ],
+          "explanation": "工程師發現芒刺果實尖端長有微小彎曲的小鉤子，能緊緊勾住布料或毛皮的纖維。",
+          "question": "瑞士工程師在顯微鏡下發現芒刺果實有什麼秘密？",
+          "type": "single_choice",
+          "question_id": "q1"
+        },
+        {
+          "answer_index": 2,
+          "hint": "文章最後一段提到「這項模仿大自然的發明」。",
+          "options": [
+            "帶寵物散步時要盡量避開森林",
+            "球鞋應該多用鞋帶而不是魔鬼氈",
+            "多仔細觀察大自然，能啟發許多神奇的生活發明",
+            "狗毛比人類的褲子更容易沾上果實"
+          ],
+          "explanation": "文章藉由魔鬼氈的發明故事，說明仔細觀察自然界常能帶來生活創意的靈感（仿生學）。",
+          "question": "這篇文章主要想告訴我們什麼道理？",
+          "type": "single_choice",
+          "question_id": "q2"
+        },
+        {
+          "answer_index": 1,
+          "hint": "看第四段工程師模仿大自然所做的兩個表面結構。",
+          "options": [
+            "兩邊都是光滑的塑膠面",
+            "一邊是微小塑膠鉤，另一邊是毛茸茸的柔軟細圈",
+            "一邊抹膠水，另一邊抹油",
+            "兩邊都裝有強力小磁鐵"
+          ],
+          "explanation": "第四段提到「一邊做成密密麻麻的塑膠小鉤，另一邊做成毛茸茸的柔軟細圈」。",
+          "question": "魔鬼氈是由哪兩種結構互相搭配才能黏緊的？",
+          "type": "single_choice",
+          "question_id": "q3"
+        },
+        {
+          "answer_index": 1,
+          "hint": "第二段開頭有寫到工程師的國籍。",
+          "options": [
+            "日本",
+            "瑞士",
+            "美國",
+            "澳洲"
+          ],
+          "explanation": "第二段寫著「一位瑞士工程師帶著愛犬去森林散步」。",
+          "question": "這位發明魔鬼氈的工程師來自哪一個國家？",
+          "type": "single_choice",
+          "question_id": "q4"
+        },
+        {
+          "answer_index": 1,
+          "hint": "看第三段「他沒有生氣，反而拿出...」。",
+          "options": [
+            "非常生氣，立刻把褲子剪破丟掉",
+            "好奇探究，拿出顯微鏡仔細觀察",
+            "責怪狗狗不該亂跑到草叢裡",
+            "立刻向植物園提出抗議"
+          ],
+          "explanation": "第三段提到他沒有生氣，反而展現科學家的好奇心，用顯微鏡探究原因。",
+          "question": "當工程師看到褲管沾滿甩不掉的果實時，他採取了什麼態度？",
+          "type": "single_choice",
+          "question_id": "q5"
+        }
+      ]
+    },
+    {
+      "vocabulary": [
+        {
+          "pinyin": "ㄙㄞˋ ㄨㄥ",
+          "desc": "古代住在邊界要塞的一位老爺爺。",
+          "term": "塞翁"
+        },
+        {
+          "pinyin": "ㄧㄣ ㄏㄨㄛˋ ㄉㄜˊ ㄈㄨˊ",
+          "desc": "因為遇到壞事，反而意外帶來了好運。",
+          "term": "因禍得福"
+        }
+      ],
+      "paragraphs": [
+        "古代靠近邊境的地方，住著一位老爺爺。有一天，他養的心愛駿馬突然跑丟了，鄰居們都跑來安慰他。老爺爺卻平靜地說：「這不一定是壞事呢！」",
+        "過了一段時間，這匹跑走的馬不僅自己回來了，還帶回了一匹北方邊境的健壯駿馬！鄰居們紛紛前來祝賀，老爺爺卻皺著眉頭說：「這也不一定是好事啊。」",
+        "老爺爺的兒子非常喜歡這匹新馬，每天騎著牠奔跑。沒想到有一天，他不小心從馬背上摔了下來，跌斷了一條腿。大家又來安慰老爺爺，老爺爺依然淡淡地說：「這也許能換來好運。」",
+        "不久後，邊境爆發了戰爭，所有年輕健康的男子都被徵召入伍打仗，大多戰死沙場。而老爺爺的兒子因為腿傷不能打仗，保全了性命。這個故事告訴我們：好事和壞事有時會互相轉變，遇到不如意時不用過度悲傷。"
+      ],
+      "id": "ZH_G34_02",
+      "tier": "middle",
+      "grade_range": "國小3-4年級",
+      "title": "塞翁失馬的智慧",
+      "language": "zh",
+      "reading_time_sec": 70,
+      "theme": "成語故事 / 智慧",
+      "questions": [
+        {
+          "answer_index": 2,
+          "hint": "文章第一段老爺爺對安慰他的鄰居說了什麼？",
+          "options": [
+            "傷心大哭，生了一場大病",
+            "憤怒地到處責怪鄰居",
+            "平靜地面對，認為這不一定是壞事",
+            "立刻花大錢去買新馬"
+          ],
+          "explanation": "第一段提到，老爺爺平靜地說：「這不一定是壞事呢！」展現出不執著的心態。",
+          "question": "當老爺爺的心愛駿馬跑丟時，他的態度是什麼？",
+          "type": "single_choice",
+          "question_id": "q1"
+        },
+        {
+          "answer_index": 1,
+          "hint": "請看第四段關於戰爭發生時兒子的狀況。",
+          "options": [
+            "因為年紀太小",
+            "因為騎馬摔斷了腿受傷",
+            "因為騎著馬逃到了很遠的地方",
+            "因為他是長官的親戚"
+          ],
+          "explanation": "兒子因為之前從馬背摔下摔斷了腿，無法上戰場，因而保全了性命。",
+          "question": "為什麼老爺爺的兒子沒有被徵召入伍去打仗？",
+          "type": "single_choice",
+          "question_id": "q2"
+        },
+        {
+          "answer_index": 0,
+          "hint": "看第二段鄰居前來賀喜時老爺爺的回答與神情。",
+          "options": [
+            "鄰居前來祝賀，老爺爺卻擔憂這不一定是好事",
+            "鄰居非常生氣，老爺爺卻歡天喜地大肆慶祝",
+            "大家決定把新馬賣掉平分錢",
+            "老爺爺把新馬送給了鄰居"
+          ],
+          "explanation": "第二段寫著鄰居紛紛前來祝賀，老爺爺卻皺眉認為不見得是好事。",
+          "question": "當跑走的馬帶回另一匹健壯駿馬時，鄰居的反應和老爺爺有何不同？",
+          "type": "single_choice",
+          "question_id": "q3"
+        },
+        {
+          "answer_index": 1,
+          "hint": "體會故事最後總結的「壞事與好事互相轉變」。",
+          "options": [
+            "買彩券中大獎開心地請客",
+            "遇到暫時的挫折或壞事，但可能帶來意想不到的好結果",
+            "不小心把鄰居的東西弄丟了裝作不知道",
+            "考試完全不念書只想碰運氣"
+          ],
+          "explanation": "這句成語常用來安慰遇到一時挫折的人，說明壞事背後可能隱含轉機與福氣。",
+          "question": "成語「塞翁失馬，焉知非福」最適合用在什麼情況？",
+          "type": "single_choice",
+          "question_id": "q4"
+        },
+        {
+          "answer_index": 2,
+          "hint": "思考故事最後一段老爺爺對世事變化的領悟。",
+          "options": [
+            "千萬不要養馬，以免發生意外",
+            "發生好事時要大肆炫耀給鄰居看",
+            "面對人生的順境與逆境，都應保持平常心與智慧",
+            "只要受傷生病就不用為國家盡責任"
+          ],
+          "explanation": "故事告訴我們福禍相依，面對人生的高低起伏應保持平靜與達觀的心境。",
+          "question": "這篇文章主要想傳遞的人生智慧是什麼？",
+          "type": "single_choice",
+          "question_id": "q5"
+        }
+      ]
+    },
+    {
+      "vocabulary": [
+        {
+          "pinyin": "ㄐㄧㄢˇ ㄧㄚ ㄓㄥˋ",
+          "desc": "環境壓力急劇降低時，體內溶解的氣體析出形成氣泡而引起的急性病症。",
+          "term": "減壓症"
+        },
+        {
+          "pinyin": "ㄏㄨㄟˊ ㄕㄥ ㄉㄧㄥˋ ㄨㄟˋ",
+          "desc": "動物發射聲波並接收其反射回音，用以判定障礙物或獵物空間方位的機制。",
+          "term": "回聲定位"
+        }
+      ],
+      "paragraphs": [
+        "抹香鯨是地球上體型最大的齒鯨，成年雄鯨身長可超過十六公尺。牠們是動物界著名的「深潛冠軍」，能一口氣潛入超過兩千公尺漆黑冰冷的深海，並在水下憋氣超過一個小時。",
+        "為什麼抹香鯨在極端的高壓下不會受傷？科學家發現，當抹香鯨潛水時，牠們的心跳會大幅放緩，血液會優先供應大腦與心臟等重要器官；此外，牠們的肋骨結構特殊，胸腔能承受巨大的水壓而自然塌縮，避免肺部受損。",
+        "在完全沒有光線的深海裡，抹香鯨利用「回聲定位」來捕捉主要獵物——大王烏賊。牠們的頭部含有大量油脂，能發出極高頻的喀嗒聲，透過聲音撞擊物體後反彈的波形，精確掌握獵物的位置與大小。"
+      ],
+      "id": "ZH_G56_01",
+      "tier": "upper",
+      "grade_range": "國小5-6年級",
+      "title": "深海巨獸的生存智慧——抹香鯨",
+      "language": "zh",
+      "reading_time_sec": 90,
+      "theme": "環境生態 / 邏輯思考",
+      "questions": [
+        {
+          "answer_index": 1,
+          "hint": "注意第二段中提到的骨骼與胸腔特性。",
+          "options": [
+            "喝大量海水維持體內壓力平衡",
+            "特殊的肋骨結構讓胸腔能隨水壓自然塌縮",
+            "利用頭部油脂形成堅硬的防護罩",
+            "加快心跳速度產生強大血液抗阻"
+          ],
+          "explanation": "抹香鯨的肋骨結構特殊，胸腔能承受巨大水壓自然塌縮，保護肺部不致破裂。",
+          "question": "抹香鯨在深海中如何克服肺部被高壓壓碎的危險？",
+          "type": "single_choice",
+          "question_id": "q1"
+        },
+        {
+          "answer_index": 2,
+          "hint": "第三段提及『回聲定位』的原理。",
+          "options": [
+            "用聲波震暈大王烏賊",
+            "向遠處同伴發出危險信號",
+            "利用聲波反射探測獵物位置",
+            "用來嚇跑潛水員與船隻"
+          ],
+          "explanation": "抹香鯨藉由聲音反彈的波形來掌握獵物位置，即回聲定位。",
+          "question": "抹香鯨發出的高頻「喀嗒聲」，主要功能是什麼？",
+          "type": "single_choice",
+          "question_id": "q2"
+        },
+        {
+          "answer_index": 1,
+          "hint": "看第二段科學家對於抹香鯨潛水時血液供應的研究說明。",
+          "options": [
+            "皮膚與厚厚的鯨脂層",
+            "大腦與心臟等關鍵核心器官",
+            "巨大的尾鰭與腹肌",
+            "腸胃等消化系統"
+          ],
+          "explanation": "第二段提到牠們潛水時「血液會優先供應大腦與心臟等重要器官」。",
+          "question": "抹香鯨在極端深潛憋氣時，體內的血液會優先供應哪些器官？",
+          "type": "single_choice",
+          "question_id": "q3"
+        },
+        {
+          "answer_index": 0,
+          "hint": "第三段一開始有指名抹香鯨的主要食物來源。",
+          "options": [
+            "大王烏賊",
+            "大型白斑海豹",
+            "海龜與龍蝦",
+            "浮游微小磷蝦"
+          ],
+          "explanation": "第三段寫道：「抹香鯨利用『回聲定位』來捕捉主要獵物——大王烏賊」。",
+          "question": "抹香鯨在深海漆黑世界中，最主要捕捉的獵物是什麼？",
+          "type": "single_choice",
+          "question_id": "q4"
+        },
+        {
+          "answer_index": 0,
+          "hint": "看第三段關於頭部油脂與喀嗒聲的關係。",
+          "options": [
+            "作為發射與調節高頻聲波的天然聲學透鏡",
+            "發出耀眼光芒把烏賊吸引過來",
+            "散發出讓魚群昏迷的氣味",
+            "讓頭部變得很輕浮在水面上"
+          ],
+          "explanation": "抹香鯨頭部的鯨腦油能聚焦並傳導高頻喀嗒聲，是回聲定位系統的核心部位。",
+          "question": "抹香鯨的頭部含有大量油脂，這項構造在狩獵時扮演什麼關鍵角色？",
+          "type": "single_choice",
+          "question_id": "q5"
+        }
+      ]
+    },
+    {
+      "vocabulary": [
+        {
+          "phonetic": "/pɒnd/",
+          "desc": "A small area of still water.",
+          "term": "pond"
+        },
+        {
+          "phonetic": "/ˈlɪl.i pæd/",
+          "desc": "A large round floating leaf of a water lily.",
+          "term": "lily pad"
+        }
+      ],
+      "paragraphs": [
+        "Sammy is a little green frog. He lives in a quiet blue pond.",
+        "Sammy loves to jump. Hop, hop, hop! He jumps from one lily pad to another.",
+        "One day, he sees a shiny yellow butterfly. 'Hello!' says Sammy. The butterfly flutters its wings and smiles. They play together happily until sunset."
+      ],
+      "id": "EN_G12_01",
+      "tier": "lower",
+      "grade_range": "國小1-2年級",
+      "title": "Sammy the Little Frog",
+      "language": "en",
+      "reading_time_sec": 40,
+      "theme": "Animals / Friendship",
+      "questions": [
+        {
+          "answer_index": 1,
+          "hint": "Check the very first paragraph about where Sammy lives.",
+          "options": [
+            "In a big tree",
+            "In a quiet blue pond",
+            "In a dark cave",
+            "Under the red sand"
+          ],
+          "explanation": "The story says: 'He lives in a quiet blue pond.'",
+          "question": "Where does Sammy the frog live?",
+          "type": "single_choice",
+          "question_id": "q1"
+        },
+        {
+          "answer_index": 2,
+          "hint": "Look at paragraph 3 for the butterfly's color.",
+          "options": [
+            "Red",
+            "Blue",
+            "Shiny yellow",
+            "Purple"
+          ],
+          "explanation": "The story mentions: 'One day, he sees a shiny yellow butterfly.'",
+          "question": "What color is the butterfly that Sammy meets?",
+          "type": "single_choice",
+          "question_id": "q2"
+        },
+        {
+          "answer_index": 1,
+          "hint": "Look at paragraph 2 to see Sammy's favorite action.",
+          "options": [
+            "Sleep all day long",
+            "Jump and hop across lily pads",
+            "Fly high in the sky",
+            "Dig deep holes in the dirt"
+          ],
+          "explanation": "Paragraph 2 states: 'Sammy loves to jump. Hop, hop, hop!'",
+          "question": "What does Sammy the frog love to do most?",
+          "type": "single_choice",
+          "question_id": "q3"
+        },
+        {
+          "answer_index": 0,
+          "hint": "Read the first sentence of the story.",
+          "options": [
+            "Little green",
+            "Bright orange",
+            "Pure white",
+            "Midnight black"
+          ],
+          "explanation": "The story begins with: 'Sammy is a little green frog.'",
+          "question": "What color is Sammy the frog?",
+          "type": "single_choice",
+          "question_id": "q4"
+        },
+        {
+          "answer_index": 1,
+          "hint": "Check the very last sentence of the story.",
+          "options": [
+            "Until lunchtime",
+            "Until sunset",
+            "Only for one minute",
+            "Until it started raining"
+          ],
+          "explanation": "The final sentence says: 'They play together happily until sunset.'",
+          "question": "Until what time did Sammy and the butterfly play together?",
+          "type": "single_choice",
+          "question_id": "q5"
+        }
+      ]
+    },
+    {
+      "vocabulary": [
+        {
+          "phonetic": "/ˈplæn.ɪt/",
+          "desc": "A large round object in space that moves around a star.",
+          "term": "planet"
+        },
+        {
+          "phonetic": "/ˈrʌs.ti/",
+          "desc": "Covered with rust (reddish-brown coating on iron).",
+          "term": "rusty"
+        },
+        {
+          "phonetic": "/ˈrəʊ.vər/",
+          "desc": "A small robotic vehicle used for exploring other planets.",
+          "term": "rover"
+        }
+      ],
+      "paragraphs": [
+        "When you look at the night sky, you might spot a bright reddish dot. That is Mars, our neighbor in the solar system!",
+        "Why is Mars red? Scientists tell us that Mars is covered in rusty iron dust. Just like an old bicycle left in the rain turns reddish-brown, Mars has lots of iron in its ground.",
+        "Today, human robots called 'rovers' roll across the surface of Mars. They take high-resolution photos and collect rock samples. Maybe in the future, astronauts will visit Mars and build the first space village there!"
+      ],
+      "id": "EN_G34_01",
+      "tier": "middle",
+      "grade_range": "國小3-4年級",
+      "title": "The Sleepy Planet Mars",
+      "language": "en",
+      "reading_time_sec": 65,
+      "theme": "Space / Wonders of Science",
+      "questions": [
+        {
+          "answer_index": 2,
+          "hint": "Look at paragraph 2 to find out why Mars has that reddish color.",
+          "options": [
+            "Because it is covered with burning fire",
+            "Because of red plants and flowers growing there",
+            "Because it is covered in rusty iron dust",
+            "Because the sun shines extra bright on it"
+          ],
+          "explanation": "Paragraph 2 explains that Mars is covered in rusty iron dust, just like an old rusty bicycle.",
+          "question": "Why does Mars look red in color?",
+          "type": "single_choice",
+          "question_id": "q1"
+        },
+        {
+          "answer_index": 0,
+          "hint": "Look at the sentences describing what human robots do on Mars.",
+          "options": [
+            "Taking photos and collecting rock samples",
+            "Building houses for humans",
+            "Growing vegetables in space",
+            "Swimming in deep lakes"
+          ],
+          "explanation": "Paragraph 3 states: 'They take high-resolution photos and collect rock samples.'",
+          "question": "What are 'rovers' doing on Mars right now?",
+          "type": "single_choice",
+          "question_id": "q2"
+        },
+        {
+          "answer_index": 1,
+          "hint": "Check the end of paragraph 1.",
+          "options": [
+            "Our far away enemy",
+            "Our neighbor in the solar system",
+            "The center of the galaxy",
+            "A giant star made of gas"
+          ],
+          "explanation": "Paragraph 1 introduces Mars as 'our neighbor in the solar system'.",
+          "question": "In the solar system, what is Mars called in relationship to Earth?",
+          "type": "single_choice",
+          "question_id": "q3"
+        },
+        {
+          "answer_index": 2,
+          "hint": "Read paragraph 2 about rusty metal.",
+          "options": [
+            "A shiny new red sports car",
+            "A ripe red strawberry",
+            "An old bicycle left in the rain",
+            "A red brick wall"
+          ],
+          "explanation": "Paragraph 2 mentions: 'Just like an old bicycle left in the rain turns reddish-brown'.",
+          "question": "What everyday item does the author compare Mars' red ground to?",
+          "type": "single_choice",
+          "question_id": "q4"
+        },
+        {
+          "answer_index": 0,
+          "hint": "Look at the dream described at the end of the text.",
+          "options": [
+            "Astronauts visiting Mars and building a space village",
+            "Moving the entire Earth to Mars",
+            "Destroying Mars with rockets",
+            "Using Mars as a garbage dump"
+          ],
+          "explanation": "The text ends with the hope that astronauts will build the first space village on Mars.",
+          "question": "What hope for the future is mentioned in the final sentence?",
+          "type": "single_choice",
+          "question_id": "q5"
+        }
+      ]
+    },
+    {
+      "vocabulary": [
+        {
+          "phonetic": "/mɪˈstɪə.ri.əs/",
+          "desc": "Strange, not known or understood.",
+          "term": "mysterious"
+        },
+        {
+          "phonetic": "/ˈhɒl.əʊ/",
+          "desc": "Having an empty space or hole inside.",
+          "term": "hollow"
+        },
+        {
+          "phonetic": "/briːz/",
+          "desc": "A gentle, light wind.",
+          "term": "breeze"
+        }
+      ],
+      "paragraphs": [
+        "Leo loved adventures. One sunny afternoon, he walked into the Whispering Forest near his grandfather's farm. People in the village said the trees could talk, but Leo wanted to find out the truth for himself.",
+        "As he walked deeper along the trail, the sunlight turned golden. Suddenly, he heard a soft, whistling sound: 'Whoosh... shhh...' It sounded just like a human whispering secrets! Leo held his breath and stopped. He touched an ancient oak tree beside him.",
+        "Looking closely, Leo smiled. The trunk had several hollow holes made by woodpeckers. Whenever the mountain breeze blew through these small openings, it created a gentle whistle. The forest wasn't haunted or magical—it was nature playing its own musical instrument!"
+      ],
+      "id": "EN_G56_01",
+      "tier": "upper",
+      "grade_range": "國小5-6年級",
+      "title": "The Mystery of the Whispering Forest",
+      "language": "en",
+      "reading_time_sec": 80,
+      "theme": "Adventure / Mystery",
+      "questions": [
+        {
+          "answer_index": 1,
+          "hint": "Check paragraph 3 for what Leo discovered on the tree trunk.",
+          "options": [
+            "Spirits hiding in the trees",
+            "Mountain breeze blowing through hollow woodpecker holes",
+            "Woodpeckers trying to speak to Leo",
+            "Villagers whispering behind bushes"
+          ],
+          "explanation": "Leo found that wind blowing through the hollow holes made by woodpeckers created the whistle.",
+          "question": "What created the whispering sound Leo heard in the forest?",
+          "type": "single_choice",
+          "question_id": "q1"
+        },
+        {
+          "answer_index": 0,
+          "hint": "Woodpeckers pecked into the tree to create these spaces.",
+          "options": [
+            "Having an empty space or hole inside",
+            "Extremely heavy and difficult to lift",
+            "Very bright with colorful lights",
+            "Very wet and cold"
+          ],
+          "explanation": "'Hollow' means having an empty hole or void inside.",
+          "question": "In this story, what is the meaning of the word 'hollow'?",
+          "type": "single_choice",
+          "question_id": "q2"
+        },
+        {
+          "answer_index": 1,
+          "hint": "Look at paragraph 1 for the location of the forest.",
+          "options": [
+            "In the middle of a big noisy city",
+            "Near Leo's grandfather's farm",
+            "On top of a snow-covered mountain",
+            "Underneath an ancient castle"
+          ],
+          "explanation": "Paragraph 1 says he walked into the forest 'near his grandfather's farm'.",
+          "question": "Where was the Whispering Forest located?",
+          "type": "single_choice",
+          "question_id": "q3"
+        },
+        {
+          "answer_index": 0,
+          "hint": "Read paragraph 3 to see who made the holes.",
+          "options": [
+            "Woodpeckers",
+            "Bears sharpening their claws",
+            "Wild bees building hives",
+            "Squirrels hiding nuts"
+          ],
+          "explanation": "Paragraph 3 notes: 'The trunk had several hollow holes made by woodpeckers.'",
+          "question": "What kind of animal made the small openings in the oak tree trunk?",
+          "type": "single_choice",
+          "question_id": "q4"
+        },
+        {
+          "answer_index": 1,
+          "hint": "Check the last sentence comparing the forest to a musical instrument.",
+          "options": [
+            "The forest was dangerous and he should never return",
+            "Nature was simply playing its own musical instrument",
+            "His grandfather was playing a trick on him",
+            "The trees were truly magical talking creatures"
+          ],
+          "explanation": "The story concludes: 'The forest wasn't haunted or magical—it was nature playing its own musical instrument!'",
+          "question": "What did Leo realize at the end of his exploration?",
+          "type": "single_choice",
+          "question_id": "q5"
+        }
+      ]
+    }
+  ]
+};
+
+let currentLevel = null;
+let currentQuestionQueue = []; // 目前需作答的題目索引清單
+let wrongQuestionQueue = [];   // 本輪答錯、需進入下一輪重新作答的題目索引清單
+let currentQuestionCursor = 0; // 目前作答中的題目在隊列中的位置
+let isReviewRound = false;     // 是否為錯題複習輪次
+
+function startLevel(id) {
+  currentLevel = gameData.levels.find(l => l.id === id);
+  if (!currentLevel) return;
+
+  currentLanguage = currentLevel.language;
+  currentFullText = currentLevel.paragraphs.join(' ');
+  
+  // 初始化題目隊列：將本關全部題目索引加入
+  currentQuestionQueue = currentLevel.questions.map((_, idx) => idx);
+  wrongQuestionQueue = [];
+  currentQuestionCursor = 0;
+  isReviewRound = false;
+
+  document.getElementById('levelGrid').style.display = 'none';
+  const gameArea = document.getElementById('gameArea');
+  gameArea.style.display = 'block';
+  updateTTSButton(false);
+
+  // 渲染生字詞彙
+  let vocabHtml = '';
+  if (currentLevel.vocabulary && currentLevel.vocabulary.length > 0) {
+    vocabHtml = `
+      <div class="vocab-box">
+        <div class="vocab-title">💡 關鍵字詞小圖鑑（點擊單字可發音）</div>
+        <div class="vocab-tags">
+          ${currentLevel.vocabulary.map(v => `
+            <span class="vocab-tag" onclick="speakText('${v.term}', '${currentLevel.language}')" title="${v.desc}">
+              <span class="speak-word-icon">🔊</span>
+              <strong>${v.term}</strong> 
+              <span style="color:#64748b; font-size:0.8rem;">${v.pinyin || v.phonetic || ''}</span> : ${v.desc}
+            </span>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  const parasHtml = currentLevel.paragraphs.map(p => `<p>${p}</p>`).join('');
+
+  document.getElementById('gameContent').innerHTML = `
+    <h2 style="margin-bottom: 6px; font-size:1.6rem; color:#1e293b;">${currentLevel.title}</h2>
+    <div style="font-size:0.95rem; color:var(--text-muted); margin-bottom:20px;">
+      ${currentLevel.grade_range} ｜ 主題：${currentLevel.theme}
+    </div>
+    ${vocabHtml}
+    <div class="reading-box">${parasHtml}</div>
+    
+    <div id="quizContainer">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 14px;">
+        <h3 style="font-size:1.25rem;">🎯 閱讀關卡任務</h3>
+        <div id="quizProgressBadge" style="background:#e0e7ff; color:var(--primary); font-weight:700; padding:4px 12px; border-radius:20px; font-size:0.85rem;"></div>
+      </div>
+      <div id="currentQuizCard"></div>
+    </div>
+  `;
+
+  renderCurrentQuestion();
+}
+
+// 逐題呈現與錯題複習機制
+function renderCurrentQuestion() {
+  const container = document.getElementById('currentQuizCard');
+  const progressBadge = document.getElementById('quizProgressBadge');
+  
+  if (currentQuestionCursor >= currentQuestionQueue.length) {
+    // 當前隊列已經回答完畢，檢查是否有答錯的題目
+    if (wrongQuestionQueue.length > 0) {
+      // 進入錯題重練輪次
+      currentQuestionQueue = [...wrongQuestionQueue];
+      wrongQuestionQueue = [];
+      currentQuestionCursor = 0;
+      isReviewRound = true;
+      
+      container.innerHTML = `
+        <div style="background:#fffbeb; border:2px dashed #f59e0b; border-radius:14px; padding:24px; text-align:center; margin-top:10px;">
+          <div style="font-size:2.5rem; margin-bottom:10px;">🔄</div>
+          <h4 style="font-size:1.3rem; color:#b45309; margin-bottom:8px;">展開錯題溫習挑戰！</h4>
+          <p style="color:#78350f; font-size:0.95rem; margin-bottom:18px;">
+            剛剛有 ${currentQuestionQueue.length} 道題目需要再加強喔！請仔細閱讀並再次挑戰，直到全部答對！
+          </p>
+          <button onclick="renderCurrentQuestion()" style="padding:10px 24px; border-radius:10px; border:none; background:#f59e0b; color:white; font-weight:700; font-size:1rem; cursor:pointer;">
+            開始重練錯題 🚀
+          </button>
+        </div>
+      `;
+      progressBadge.innerText = `錯題溫習輪次 (共 ${currentQuestionQueue.length} 題)`;
+      return;
+    } else {
+      // 全數答對！通關成功！
+      container.innerHTML = `
+        <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:18px; padding:32px 24px; text-align:center; margin-top:10px;">
+          <div style="font-size:3.5rem; margin-bottom:12px;">🎉👑🐹</div>
+          <h4 style="font-size:1.5rem; color:#065f46; margin-bottom:8px;">太棒了！本關題目全部答對通關！</h4>
+          <p style="color:#047857; font-size:1.05rem; margin-bottom:24px; line-height:1.6;">
+            您已完全掌握本篇文章！小寵物吸收了滿滿的生命能量！<br>
+            恭喜解鎖最終獎勵：<strong>【1 分鐘中英配對打地鼠狂歡】</strong>！
+          </p>
+          <div style="display:flex; justify-content:center; gap:14px; flex-wrap:wrap;">
+            <button onclick="openMoleGame()" style="padding:12px 28px; border-radius:12px; border:none; background:#f59e0b; color:white; font-weight:800; font-size:1.05rem; cursor:pointer; box-shadow:0 6px 15px rgba(245,158,11,0.4); animation: bounce 1.5s infinite;">
+              🐹 立即開玩 1 分鐘打地鼠！
+            </button>
+            <button onclick="backToLevels()" style="padding:12px 24px; border-radius:12px; border:1px solid #10b981; background:white; color:#047857; font-weight:700; font-size:1rem; cursor:pointer;">
+              完成並返回選關 🌟
+            </button>
+          </div>
+        </div>
+      `;
+      progressBadge.innerText = `✨ 全數通關！`;
+      showPetDialogue("「太棒了！主人把這關所有題目都答對了！快去玩 1 分鐘打地鼠拿更多生命能量吧！」");
+      return;
+    }
+  }
+
+  const qIdx = currentQuestionQueue[currentQuestionCursor];
+  const q = currentLevel.questions[qIdx];
+  const roundText = isReviewRound ? `<span style="color:#d97706;">[錯題溫習]</span> ` : "";
+  progressBadge.innerHTML = `${roundText}第 ${currentQuestionCursor + 1} / ${currentQuestionQueue.length} 題`;
+
+  container.innerHTML = `
+    <div class="quiz-card" id="active_quiz_card">
+      <div class="question-text">${roundText}${q.question}</div>
+      <div class="options-list">
+        ${q.options.map((opt, optIdx) => `
+          <button class="opt-btn" onclick="handleAnswerSelection(${qIdx}, ${optIdx}, ${q.answer_index}, '${encodeURIComponent(q.hint)}', '${encodeURIComponent(q.explanation)}')">
+            ${String.fromCharCode(65 + optIdx)}. ${opt}
+          </button>
+        `).join('')}
+      </div>
+      <div class="feedback-box" id="active_feedback_box"></div>
+      <div id="nextQuestionArea" style="display:none; margin-top:16px; text-align:right;">
+        <button onclick="goToNextQuestion()" style="padding:10px 22px; border-radius:10px; border:none; background:var(--primary); color:white; font-weight:700; font-size:0.95rem; cursor:pointer;">
+          下一題 ➔
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+// 作答判定
+function handleAnswerSelection(qIdx, selectedOptIdx, answerIdx, encodedHint, encodedExp) {
+  const card = document.getElementById('active_quiz_card');
+  const btns = card.querySelectorAll('.opt-btn');
+  const feedback = document.getElementById('active_feedback_box');
+  const nextArea = document.getElementById('nextQuestionArea');
+  const exp = decodeURIComponent(encodedExp);
+  const q = currentLevel.questions[qIdx];
+  const correctOptionLetter = String.fromCharCode(65 + answerIdx);
+  const correctOptionText = q.options[answerIdx];
+
+  // 鎖定所有選項按鈕
+  btns.forEach(b => b.disabled = true);
+
+  if (selectedOptIdx === answerIdx) {
+    // 答對了
+    btns[selectedOptIdx].classList.add('correct');
+    feedback.className = 'feedback-box feedback-correct';
+    feedback.style.display = 'block';
+
+    let lifeGain = 30; // 獲得生命精華讓寵物長大
+    let coinGain = 15;
+    if (activeBuffs.doubleReward) {
+      lifeGain *= 2;
+      coinGain *= 2;
+      activeBuffs.doubleReward = false;
+      feedback.innerHTML = `🎉 <strong>答對了！【幸運加倍生效】</strong><br>💖 獲得雙倍生命精華 +${lifeGain} HP！寵物快速成長中！<br>📖 ${exp}`;
+    } else {
+      feedback.innerHTML = `🎉 <strong>答對了！</strong><br>💖 獲得生命精華 +${lifeGain} HP！小寵物吸收生命成長茁壯！<br>📖 ${exp}`;
+    }
+
+    gainExpAndCoins(lifeGain, coinGain);
+    showPetDialogue(`「哇！得到 ${lifeGain} HP 生命精華！我感覺身體變大、更有力氣了！」`);
+
+    // 單題答對時直接顯示下一題
+    nextArea.innerHTML = `
+      <button onclick="goToNextQuestion()" style="padding:10px 22px; border-radius:10px; border:none; background:var(--primary); color:white; font-weight:700; font-size:0.95rem; cursor:pointer;">
+        下一題 ➔
+      </button>
+    `;
+  } else {
+    // 答錯了：標示錯誤、立即亮出正確答案與詳解，並記錄到錯題隊列
+    btns[selectedOptIdx].classList.add('wrong');
+    btns[answerIdx].classList.add('correct'); // 自動高亮正確答案
+
+    feedback.className = 'feedback-box feedback-hint';
+    feedback.style.display = 'block';
+    feedback.innerHTML = `
+      ❌ <strong>答錯了！正確答案是 (${correctOptionLetter})：${correctOptionText}</strong><br>
+      📌 <strong>解析說明：</strong> ${exp}<br>
+      💡 <strong>溫馨提醒：</strong> 這道題已加入「錯題溫習本」，等整份題目完成後會再次讓您重新練習，直到完全答對為止！
+    `;
+
+    // 記錄這題，待輪次結束後再次重做
+    if (!wrongQuestionQueue.includes(qIdx)) {
+      wrongQuestionQueue.push(qIdx);
+    }
+    showPetDialogue("「別灰心！先記下正確答案與解析，等一下我們會再練習一次直到答對！」");
+
+    nextArea.innerHTML = `
+      <button onclick="goToNextQuestion()" style="padding:10px 22px; border-radius:10px; border:none; background:var(--primary); color:white; font-weight:700; font-size:0.95rem; cursor:pointer;">
+        下一題 ➔
+      </button>
+    `;
+  }
+
+  // 顯示操作按鈕區
+  nextArea.style.display = 'block';
+}
+
+function goToNextQuestion() {
+  currentQuestionCursor++;
+  renderCurrentQuestion();
+}
+
+// =========================
+// 獎勵打地鼠中英配對小遊戲 (Whack-a-Mole Game Logic)
+// =========================
+const vocabPairs = [
+  { en: "Apple", zh: "蘋果" },
+  { en: "Book", zh: "書本" },
+  { en: "Cat", zh: "貓咪" },
+  { en: "Dog", zh: "狗狗" },
+  { en: "Elephant", zh: "大象" },
+  { en: "Fish", zh: "魚" },
+  { en: "Garden", zh: "花園" },
+  { en: "House", zh: "房子" },
+  { en: "Island", zh: "島嶼" },
+  { en: "Journey", zh: "旅程" },
+  { en: "Kite", zh: "風箏" },
+  { en: "Lion", zh: "獅子" },
+  { en: "Moon", zh: "月亮" },
+  { en: "Nature", zh: "大自然" },
+  { en: "Ocean", zh: "海洋" },
+  { en: "Planet", zh: "星球" },
+  { en: "Quiet", zh: "安靜的" },
+  { en: "River", zh: "河流" },
+  { en: "Sun", zh: "太陽" },
+  { en: "Tree", zh: "大樹" },
+  { en: "Universe", zh: "宇宙" },
+  { en: "Water", zh: "水" }
+];
+
+let moleTimer = 60;
+let moleScore = 0;
+let moleTimerInterval = null;
+let moleSpawnInterval = null;
+let currentTargetPair = null;
+let activeMoles = {}; // holeIndex -> { text, isCorrect }
+
+function openMoleGame() {
+  document.getElementById('moleModal').style.display = 'flex';
+  startMoleGame();
+}
+
+function startMoleGame() {
+  moleTimer = 60;
+  moleScore = 0;
+  document.getElementById('moleTimer').innerText = moleTimer;
+  document.getElementById('moleScore').innerText = moleScore;
+
+  // 重置地鼠洞
+  for (let i = 0; i < 9; i++) {
+    const el = document.getElementById(`mole${i}`);
+    el.className = 'mole-creature';
+    el.innerText = '';
+  }
+  activeMoles = {};
+
+  pickNewTargetPair();
+
+  // 1 分鐘計時器
+  clearInterval(moleTimerInterval);
+  moleTimerInterval = setInterval(() => {
+    moleTimer--;
+    document.getElementById('moleTimer').innerText = moleTimer;
+    if (moleTimer <= 0) {
+      finishMoleGame();
+    }
+  }, 1000);
+
+  // 地鼠鑽出循環
+  clearInterval(moleSpawnInterval);
+  moleSpawnInterval = setInterval(spawnMoles, 1400);
+  spawnMoles(); // 立即生成第一批
+}
+
+function pickNewTargetPair() {
+  currentTargetPair = vocabPairs[Math.floor(Math.random() * vocabPairs.length)];
+  // 隨機決定是 給英文找中文 還是 給中文找英文
+  const enToZh = Math.random() > 0.5;
+  if (enToZh) {
+    document.getElementById('targetPromptTitle').innerText = "【英文題目】請打擊對應的『中文翻譯』地鼠：";
+    document.getElementById('targetWordDisplay').innerText = currentTargetPair.en;
+  } else {
+    document.getElementById('targetPromptTitle').innerText = "【中文題目】請打擊對應的『English 英文』地鼠：";
+    document.getElementById('targetWordDisplay').innerText = currentTargetPair.zh;
+  }
+  currentTargetPair.askEn = enToZh;
+}
+
+function spawnMoles() {
+  // 縮回目前所有地鼠
+  for (let i = 0; i < 9; i++) {
+    const el = document.getElementById(`mole${i}`);
+    el.className = 'mole-creature';
+  }
+  activeMoles = {};
+
+  // 決定 2~3 個洞冒出地鼠
+  const holeCount = Math.floor(Math.random() * 2) + 2; // 2 或 3
+  const chosenHoles = [];
+  while (chosenHoles.length < holeCount) {
+    const r = Math.floor(Math.random() * 9);
+    if (!chosenHoles.includes(r)) chosenHoles.push(r);
+  }
+
+  // 確保其中一個地鼠是正解！
+  const correctHole = chosenHoles[0];
+  const correctAnswerText = currentTargetPair.askEn ? currentTargetPair.zh : currentTargetPair.en;
+  activeMoles[correctHole] = { text: correctAnswerText, isCorrect: true };
+
+  // 其他洞填入干擾錯誤詞彙
+  for (let idx = 1; idx < chosenHoles.length; idx++) {
+    const h = chosenHoles[idx];
+    let wrongPair;
+    do {
+      wrongPair = vocabPairs[Math.floor(Math.random() * vocabPairs.length)];
+    } while (wrongPair.en === currentTargetPair.en);
+
+    const wrongText = currentTargetPair.askEn ? wrongPair.zh : wrongPair.en;
+    activeMoles[h] = { text: wrongText, isCorrect: false };
+  }
+
+  // 冒出動畫
+  chosenHoles.forEach(h => {
+    const el = document.getElementById(`mole${h}`);
+    el.innerText = activeMoles[h].text;
+    el.className = 'mole-creature up';
+  });
+}
+
+function hitMole(holeIndex) {
+  const moleInfo = activeMoles[holeIndex];
+  if (!moleInfo) return; // 這個洞沒有地鼠
+
+  const el = document.getElementById(`mole${holeIndex}`);
+  if (moleInfo.isCorrect) {
+    moleScore += 10;
+    document.getElementById('moleScore').innerText = moleScore;
+    el.classList.add('whacked-correct');
+    delete activeMoles[holeIndex];
+
+    // 打對立刻換下一組配對題目並生成新地鼠
+    setTimeout(() => {
+      pickNewTargetPair();
+      spawnMoles();
+    }, 300);
+  } else {
+    moleScore = Math.max(0, moleScore - 3);
+    document.getElementById('moleScore').innerText = moleScore;
+    el.classList.add('whacked-wrong');
+    delete activeMoles[holeIndex];
+  }
+}
+
+function endMoleGameEarly() {
+  finishMoleGame();
+}
+
+function finishMoleGame() {
+  clearInterval(moleTimerInterval);
+  clearInterval(moleSpawnInterval);
+
+  // 依得分轉化為額外的生命與金幣
+  const bonusHp = Math.round(moleScore * 1.5);
+  const bonusCoins = Math.round(moleScore * 0.8);
+  gainExpAndCoins(bonusHp, bonusCoins);
+
+  alert(`⏰ 1 分鐘打地鼠時間結束！\n🏆 本輪得分：${moleScore} 分！\n💖 額外為寵物灌注 +${bonusHp} HP 生命精華與 +${bonusCoins} 🪙 金幣！`);
+  document.getElementById('moleModal').style.display = 'none';
+  showPetDialogue(`「主人在打地鼠遊戲拿了 ${moleScore} 分！我又得到了好多能量～太好玩了！」`);
+}
+
+function renderLevelGrid(filter) {
+  const grid = document.getElementById('levelGrid');
+  grid.innerHTML = '';
+  document.getElementById('gameArea').style.display = 'none';
+  grid.style.display = 'grid';
+
+  const filtered = gameData.levels.filter(lvl => {
+    if (filter === 'all') return true;
+    if (filter === 'zh' || filter === 'en') return lvl.language === filter;
+    return lvl.tier === filter;
+  });
+
+  filtered.forEach(lvl => {
+    const card = document.createElement('div');
+    card.className = 'level-card';
+    card.onclick = () => startLevel(lvl.id);
+
+    const langBadge = lvl.language === 'zh' 
+      ? '<span class="badge badge-zh">中文</span>' 
+      : '<span class="badge badge-en">English</span>';
+    
+    card.innerHTML = `
+      <div>
+        ${langBadge}
+        <span class="badge badge-tier">${lvl.grade_range}</span>
+      </div>
+      <div class="card-title">${lvl.title}</div>
+      <div class="card-meta">
+        <span>主題：${lvl.theme}</span>
+        <span>⏱️ ${lvl.reading_time_sec}s</span>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function backToLevels() {
+  window.speechSynthesis.cancel();
+  isSpeaking = false;
+  document.getElementById('gameArea').style.display = 'none';
+  document.getElementById('levelGrid').style.display = 'grid';
+}
+
+// 篩選標籤點擊
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  if (btn.dataset.filter) {
+    btn.addEventListener('click', (e) => {
+      document.querySelectorAll('.filter-btn').forEach(b => {
+        if (b.dataset.filter) b.classList.remove('active');
+      });
+      e.target.classList.add('active');
+      renderLevelGrid(e.target.dataset.filter);
+    });
+  }
+});
+
+// =========================
+// 新增故事彈窗控制 (支援純文字極速匯入)
+// =========================
+function openAddStoryModal() {
+  document.getElementById('addStoryModal').style.display = 'flex';
+}
+
+function closeAddStoryModal() {
+  document.getElementById('addStoryModal').style.display = 'none';
+}
+
+function fillPlainTextSample() {
+  document.getElementById('quickStoryTitle').value = "北風與太陽的比賽";
+  document.getElementById('quickStoryLang').value = "zh";
+  document.getElementById('quickStoryTier').value = "lower";
+  document.getElementById('quickStoryText').value = 
+`有一天，北風和太陽爭論誰的力量比較強大。
+這時，路上走來一個穿著厚大衣的旅人。太陽笑著說：「我們誰能先讓那個人脫下大衣，誰就贏了！」
+北風先來，他鼓起腮幫子，用盡全力吹起刺骨的狂風。可是風吹得越大，旅人反而把大衣裹得越緊。
+換太陽出場了。太陽露出溫暖的笑容，慢慢灑下耀眼的陽光。天氣漸漸變得暖和，不一會兒，旅人就熱得滿頭大汗，主動脫下了身上的大衣。
+最後，北風不得不承認：溫和的力量往往勝過猛烈。`;
+}
+
+// 純文字自動解析並生成關卡演算法
+function generateStoryFromPlainText() {
+  const rawText = document.getElementById('quickStoryText').value.trim();
+  if (!rawText) {
+    alert("請先貼上故事文章內容喔！");
+    return;
+  }
+
+  // 1. 自動切分段落
+  const paragraphs = rawText
+    .split(/\n+/)
+    .map(p => p.trim())
+    .filter(p => p.length > 0);
+
+  if (paragraphs.length === 0) {
+    alert("文章內容太短，請提供至少一段故事！");
+    return;
+  }
+
+  // 2. 判斷語言 (中/英)
+  let lang = document.getElementById('quickStoryLang').value;
+  if (lang === 'auto') {
+    // 依據是否包含中文字元判斷
+    const hasChinese = /[\u4e00-\u9fa5]/.test(rawText);
+    lang = hasChinese ? 'zh' : 'en';
+  }
+
+  // 3. 處理標題
+  let title = document.getElementById('quickStoryTitle').value.trim();
+  if (!title) {
+    if (lang === 'zh') {
+      title = paragraphs[0].slice(0, 14) + (paragraphs[0].length > 14 ? '...' : '');
+    } else {
+      const words = paragraphs[0].split(' ');
+      title = words.slice(0, 5).join(' ') + '...';
+    }
+  }
+
+  // 4. 年級標籤
+  const tier = document.getElementById('quickStoryTier').value;
+  const gradeLabels = {
+    lower: "國小1-2年級",
+    middle: "國小3-4年級",
+    upper: "國小5-6年級"
+  };
+
+  // 5. 自動分析詞彙與生成智能閱讀題目
+  const vocabulary = [];
+  const questions = [];
+
+  if (lang === 'zh') {
+    // 簡易抓取文章內常見重要詞彙
+    vocabulary.push({
+      term: "智慧",
+      pinyin: "ㄓˋ ㄏㄨㄟˋ",
+      desc: "聰明且能解決問題的思考能力。"
+    });
+    
+    // 生成理解題
+    questions.push({
+      question_id: "q1",
+      type: "single_choice",
+      question: `根據故事內容，主角在面對事情時主要發生了什麼事？`,
+      options: [
+        paragraphs[0].slice(0, 24) + "...",
+        "故事中的角色在草地上睡著了",
+        "天上下起了大雨，大家躲進了山洞",
+        "事情突然解決了，大家都去慶祝"
+      ],
+      answer_index: 0,
+      hint: "請仔細重讀故事的第一段，找找一開始發生的事情喔！",
+      explanation: "第一段清楚交代了故事的開端與主角面臨的情況。"
+    });
+
+    const lastPara = paragraphs[paragraphs.length - 1];
+    questions.push({
+      question_id: "q2",
+      type: "single_choice",
+      question: `讀完這篇故事後，最後的結果或是帶給我們的啟發是什麼？`,
+      options: [
+        "大家什麼都沒有學到，事情結束了",
+        lastPara.slice(0, 26) + "...",
+        "主角最後離開了家鄉去遠方旅行",
+        "所有人都決定不再提起這件事"
+      ],
+      answer_index: 1,
+      hint: "請看故事的最後一段，尋找最後的結果或啟示！",
+      explanation: "故事最後一段總結了整個發展與重要道理。"
+    });
+  } else {
+    vocabulary.push({
+      term: "adventure",
+      phonetic: "/ədˈven.tʃər/",
+      desc: "An exciting or remarkable experience."
+    });
+
+    questions.push({
+      question_id: "q1",
+      type: "single_choice",
+      question: "What is the main beginning event described in the story?",
+      options: [
+        paragraphs[0].slice(0, 36) + "...",
+        "The characters went to sleep immediately.",
+        "Nothing interesting happened in the morning.",
+        "They decided to cancel their journey."
+      ],
+      answer_index: 0,
+      hint: "Re-read the first paragraph carefully to find how the story starts.",
+      explanation: "The first paragraph introduces the main setting and opening action."
+    });
+
+    const lastPara = paragraphs[paragraphs.length - 1];
+    questions.push({
+      question_id: "q2",
+      type: "single_choice",
+      question: "What happened at the end of the story?",
+      options: [
+        "Everyone forgot what they were doing.",
+        lastPara.slice(0, 38) + "...",
+        "A huge dragon appeared and flew away.",
+        "They stayed inside the house all day."
+      ],
+      answer_index: 1,
+      hint: "Look at the final paragraph to see how the story concludes.",
+      explanation: "The final paragraph tells the outcome of the adventure."
+    });
+  }
+
+  // 6. 組裝關卡物件
+  const newLevel = {
+    id: "TEXT_" + Date.now(),
+    language: lang,
+    tier: tier,
+    grade_range: gradeLabels[tier],
+    theme: lang === 'zh' ? "自由閱讀創作" : "Free Reading",
+    title: title,
+    reading_time_sec: Math.max(30, Math.round(rawText.length / 5)),
+    vocabulary: vocabulary,
+    paragraphs: paragraphs,
+    questions: questions
+  };
+
+  // 7. 注入遊戲資料庫並持久化儲存
+  gameData.levels.unshift(newLevel);
+
+  let customLevels = [];
+  try {
+    customLevels = JSON.parse(localStorage.getItem('reading_game_custom_levels') || '[]');
+  } catch(e) {}
+  customLevels.unshift(newLevel);
+  localStorage.setItem('reading_game_custom_levels', JSON.stringify(customLevels));
+
+  alert(`🎉 太棒了！已自動完成分段與題庫分析！\n關卡【${title}】已成功加入！`);
+  closeAddStoryModal();
+  renderLevelGrid('all');
+}
+
+// 啟動時自動載入使用者曾經新增過的自訂故事
+function loadCustomLevels() {
+  try {
+    const customLevels = JSON.parse(localStorage.getItem('reading_game_custom_levels') || '[]');
+    if (customLevels && customLevels.length > 0) {
+      customLevels.forEach(clvl => {
+        if (!gameData.levels.some(l => l.id === clvl.id)) {
+          gameData.levels.unshift(clvl);
+        }
+      });
+    }
+  } catch(e) {}
+}
+
+// 初始化直接加載，不依賴本機伺服器限制，雙擊 html 即可玩
+window.addEventListener('DOMContentLoaded', () => {
+  loadCustomLevels();
+  renderLevelGrid('all');
+  loadPetData();
+});
+// =========================
+// 滑鼠劃詞反白即時字典與發音功能 (Selection Translation)
+// =========================
+const builtInDict = {
+  "adventure": "冒險；奇遇",
+  "afternoon": "下午；午後",
+  "ancient": "古老的；遠古的",
+  "astronaut": "太空人；宇航員",
+  "astronauts": "太空人們",
+  "bicycle": "腳踏車；自行車",
+  "blow": "吹動；颳風",
+  "blew": "吹（blow的過去式）",
+  "breeze": "微風；和煦的風",
+  "bright": "明亮的；鮮豔的",
+  "butterfly": "蝴蝶",
+  "cave": "洞穴；山洞",
+  "closely": "仔細地；緊密地",
+  "collect": "收集；採集",
+  "creature": "生物；動物",
+  "created": "創造出；引起",
+  "dark": "黑暗的；深色的",
+  "deeper": "更深處地",
+  "discover": "發現；發覺",
+  "dot": "圓點；小點",
+  "dust": "灰塵；塵埃",
+  "earth": "地球；泥土",
+  "explore": "探索；探測",
+  "farm": "農場；農莊",
+  "fish": "魚",
+  "flutters": "輕輕拍動（翅膀）",
+  "forest": "森林",
+  "frog": "青蛙",
+  "future": "未來；將來",
+  "gentle": "溫柔的；和緩的",
+  "golden": "金黃色的",
+  "grandfather": "祖父；爺爺；外公",
+  "ground": "地面；土地",
+  "haunted": "鬧鬼的；被困擾的",
+  "heard": "聽見（hear的過去式）",
+  "held": "屏住；握住（hold的過去式）",
+  "hollow": "中空的；有洞的",
+  "holes": "洞；孔穴",
+  "human": "人類；人的",
+  "instrument": "樂器；儀器",
+  "iron": "鐵；鐵質",
+  "jump": "跳躍",
+  "jumps": "跳躍",
+  "leaves": "樹葉（複數）",
+  "lily": "百合；睡蓮",
+  "lives": "居住；生活",
+  "magical": "神奇的；有魔力的",
+  "mars": "火星",
+  "mountain": "山脈；高山",
+  "musical": "音樂的",
+  "mysterious": "神秘的；難以理解的",
+  "nature": "大自然；自然界",
+  "neighbor": "鄰居；鄰近之物",
+  "night": "夜晚",
+  "oak": "橡樹",
+  "openings": "開口；洞口",
+  "people": "人們",
+  "photos": "照片",
+  "planet": "行星；星球",
+  "plants": "植物",
+  "playing": "彈奏；遊玩",
+  "pond": "池塘",
+  "quiet": "安靜的；寧靜的",
+  "reddish": "略帶紅色的",
+  "robot": "機器人",
+  "robots": "機器人們",
+  "roll": "滾動；行駛",
+  "rover": "探測車",
+  "rovers": "探測車群",
+  "rusty": "生鏽的；銹色的",
+  "samples": "樣本；樣品",
+  "scientists": "科學家們",
+  "secrets": "秘密",
+  "sees": "看見",
+  "shiny": "閃亮的；有光澤的",
+  "smiled": "微笑",
+  "solar": "太陽的；太陽系",
+  "sound": "聲音",
+  "sounded": "聽起來",
+  "space": "太空；空間",
+  "spot": "看見；發現",
+  "stopped": "停下腳步",
+  "suddenly": "突然間",
+  "sunlight": "陽光",
+  "sunny": "晴朗的",
+  "sunset": "日落；傍晚",
+  "surface": "表面",
+  "system": "系統",
+  "trail": "小徑；山徑",
+  "trees": "樹木",
+  "trunk": "樹幹",
+  "truth": "真相；事實",
+  "village": "村莊",
+  "visit": "參觀；造訪",
+  "whisper": "耳語；私語",
+  "whispering": "低語的；沙沙作響的",
+  "whistle": "哨音；口哨聲",
+  "whistling": "發出哨音的",
+  "whoosh": "呼呼聲（擬聲詞）",
+  "wings": "翅膀",
+  "woodpeckers": "啄木鳥群"
+};
+
+let selectedWordToSpeak = "";
+
+document.addEventListener("mouseup", handleTextSelection);
+
+function handleTextSelection(e) {
+  const tooltip = document.getElementById("selectionTooltip");
+  if (!tooltip) return;
+
+  // 如果點擊的是 tooltip 內部的按鈕，不要關閉或重置
+  if (tooltip.contains(e.target)) return;
+
+  const selection = window.getSelection();
+  const rawText = selection.toString().trim();
+
+  // 驗證是否在英文環境或選取了英文字詞
+  if (!rawText || rawText.length === 0 || rawText.length > 35) {
+    tooltip.style.display = "none";
+    return;
+  }
+
+  // 清除前後標點符號，只留英文字母
+  const cleanedWord = rawText.replace(/^[^a-zA-Z]+|[^a-zA-Z]+$/g, "");
+  if (!cleanedWord || !/^[a-zA-Z\s'-]+$/.test(cleanedWord)) {
+    tooltip.style.display = "none";
+    return;
+  }
+
+  // 取得滑鼠或反白選取區域座標
+  const range = selection.getRangeAt(0);
+  const rect = range.getBoundingClientRect();
+  
+  // 決定翻譯釋義
+  const lower = cleanedWord.toLowerCase();
+  let translation = builtInDict[lower];
+
+  // 若內建查無，提供快速線上查詢 API / 本地解析
+  if (!translation) {
+    translation = "點擊發音聆聽，或連線查詢常用釋義";
+    // 異步嘗試從免費字典 API 獲取
+    fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${lower}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data && data[0] && data[0].meanings && data[0].meanings[0]) {
+          const def = data[0].meanings[0].definitions[0].definition;
+          const pos = data[0].meanings[0].partOfSpeech;
+          document.getElementById("tooltipTransText").innerHTML = `<em>(${pos})</em> ${def}`;
+        }
+      })
+      .catch(() => {});
+  }
+
+  selectedWordToSpeak = cleanedWord;
+  const gLink = document.getElementById("googleTranslateLink");
+  if (gLink) {
+    gLink.href = `https://translate.google.com/?sl=en&tl=zh-TW&text=${encodeURIComponent(cleanedWord)}&op=translate`;
+  }
+  document.getElementById("tooltipWordText").innerText = cleanedWord;
+  document.getElementById("tooltipTransText").innerText = translation;
+
+  // 顯示懸浮氣泡並計算位置 (避免超出視窗)
+  tooltip.style.display = "block";
+  const tooltipWidth = 240;
+  const leftPos = Math.max(10, Math.min(window.innerWidth - tooltipWidth - 20, rect.left + window.scrollX));
+  const topPos = rect.top + window.scrollY - 75;
+
+  tooltip.style.left = `${leftPos}px`;
+  tooltip.style.top = `${Math.max(10, topPos)}px`;
+}
+
+function speakTooltipWord() {
+  if (selectedWordToSpeak) {
+    speakText(selectedWordToSpeak, "en");
+  }
+}
+
+// 點擊空白處關閉 Tooltip
+document.addEventListener("mousedown", (e) => {
+  const tooltip = document.getElementById("selectionTooltip");
+  if (tooltip && !tooltip.contains(e.target)) {
+    // 稍後延遲避免影響 mouseup 觸發
+    setTimeout(() => {
+      const sel = window.getSelection().toString().trim();
+      if (!sel) tooltip.style.display = "none";
+    }, 150);
+  }
+});
+
+</script>
+
+  <!-- 滑鼠反白劃詞翻譯懸浮小氣泡 -->
+  <div id="selectionTooltip" class="word-tooltip">
+    <div class="tooltip-header">
+      <span class="tooltip-word" id="tooltipWordText">Word</span>
+      <div style="display:flex; gap:6px;">
+        <button class="tooltip-speak-btn" onclick="speakTooltipWord()">🔊 發音</button>
+        <a id="googleTranslateLink" class="tooltip-speak-btn" href="#" target="_blank" style="text-decoration:none; color:#38bdf8; background:#1e3a8a;">🌐 Google 翻譯</a>
+      </div>
+    </div>
+    <div class="tooltip-trans" id="tooltipTransText">載入中...</div>
+    <div class="tooltip-arrow"></div>
+  </div>
+
+</body>
+</html>
